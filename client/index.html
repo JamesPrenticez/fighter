@@ -1,20 +1,17 @@
-hello world
+<canvas id="ctx" width="500" height="500" style="border: 1px solid green"></canvas>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  const socket = io();
+    var ctx = document.getElementById("ctx").getContext("2d");
+    ctx.font = "30px Arial"
 
-  //send to the server
-  var happy = function() {
-      socket.emit("happy", {
-        reason:"because its working!"
-        });
-    }
+    const socket = io();
 
   //recieve from the server
-  socket.on("serverMsg", function(data){
-      console.log(data.msg)
-  })
+    socket.on("newPositions", function(data){
+        ctx.clearRect(0,0,500,500)
+        for(var i = 0; i < data.length; i++){
+        ctx.fillText(data[i].number, data[i].x, data[i].y)
+        }
+    })
 </script>
-
-<button onclick="happy()">Happy</button>

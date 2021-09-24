@@ -1,1 +1,20 @@
 hello world
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  //send to the server
+  var happy = function() {
+      socket.emit("happy", {
+        reason:"because its working!"
+        });
+    }
+
+  //recieve from the server
+  socket.on("serverMsg", function(data){
+      console.log(data.msg)
+  })
+</script>
+
+<button onclick="happy()">Happy</button>

@@ -1,6 +1,6 @@
 # fighter
 
-https://www.youtube.com/c/ScriptersWar/videos
+https://www.youtube.com/playlist?list=PLWYpfG6VFQl4xbkPd2YWjt4NgPtfpd652
 
 File communication (Express)
     Client asks server for a file (eg: playerImg.png)

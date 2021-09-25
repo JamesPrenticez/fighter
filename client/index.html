@@ -14,4 +14,18 @@
         ctx.fillText(data[i].number, data[i].x, data[i].y)
         }
     })
-</script>
+
+    //send to the server
+    document.onkeydown = (event) => {
+      if (event.keyCode === 87) socket.emit("keyPress", {inputId:"up", state: true}); // w
+      else if (event.keyCode === 83) socket.emit("keyPress", {inputId:"down", state: true}); // s
+      else if (event.keyCode === 68) socket.emit("keyPress", {inputId:"right", state: true}); // d
+      else if (event.keyCode === 65) socket.emit("keyPress", {inputId:"left", state: true}); // a
+    }
+    document.onkeyup = (event) => {
+      if (event.keyCode === 87) socket.emit("keyPress", {inputId:"up", state: false}); // w
+      else if (event.keyCode === 83) socket.emit("keyPress", {inputId:"down", state: false}); // s
+      else if (event.keyCode === 68) socket.emit("keyPress", {inputId:"right", state: false}); // d
+      else if (event.keyCode === 65) socket.emit("keyPress", {inputId:"left", state: false}); // a
+    }
+  </script>

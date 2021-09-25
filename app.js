@@ -27,7 +27,7 @@ class Entity {
         this.speedY = speedY,
         this.id = id 
     }
-    update(){
+    superUpdate(){
         this.updatePosition();
         this.updateSpeed();
     }
@@ -37,6 +37,7 @@ class Entity {
     }
 }
 
+// ---------- PLayer ---------- 
 class Player extends Entity{
     constructor(name = "james", number = 1, pressingUp = false, pressingDown = false, pressingRight = false, pressingLeft = false){
         super()
@@ -56,22 +57,10 @@ class Player extends Entity{
     }
 }
 
-var io = require("socket.io")(server, {});
-
-io.sockets.on("connection", function(socket){
-    socket.id = Math.random();
-    console.log("Socket connected " + socket.id)
-    SOCKET_LIST[socket.id] = socket;
-    
+Player.onConnect = (socket) => {
     var numberOfPlayers =  Object.keys(PLAYER_LIST).length + 1
     var player = new Player(name = "bob", number = numberOfPlayers)
     PLAYER_LIST[socket.id] = player
-
-    socket.on("disconnect", function(){
-        console.log("Socket disconnected " + socket.id)
-        delete SOCKET_LIST[socket.id]
-        delete PLAYER_LIST[socket.id]
-    })
 
     socket.on("keyPress", function(data){
         if(data.inputId === "up") player.pressingUp = data.state;
@@ -79,20 +68,48 @@ io.sockets.on("connection", function(socket){
         else if(data.inputId === "right") player.pressingRight = data.state;
         else if(data.inputId === "left") player.pressingLeft = data.state;
     })
+}
+
+Player.onDisconnect = (socket) => {
+    console.log("Socket disconnected " + socket.id)
+    delete SOCKET_LIST[socket.id]
+    delete PLAYER_LIST[socket.id]
+}
+
+Player.update = () => {
+    var pack = [];
+    for(var i in PLAYER_LIST){
+        var player = PLAYER_LIST[i]
+        player.superUpdate()
+        pack.push({
+            x: player.x,
+            y: player.y,
+            number: player.number
+        })
+    }
+    return pack;
+}
+
+// ---------- Socket ---------- 
+var io = require("socket.io")(server, {});
+
+io.sockets.on("connection", function(socket){
+    socket.id = Math.random();
+    console.log("Socket connected " + socket.id)
+    SOCKET_LIST[socket.id] = socket;
+    Player.onConnect(socket)
+
+    socket.on("disconnect", function(){
+        Player.onDisconnect(socket)
+    })
+
+
 })
 
 // For every player connected loop through SOCKETLIST and update there position
 setInterval(function(){
-    var pack = [];
-    for(var i in PLAYER_LIST){
-            var player = PLAYER_LIST[i]
-            player.update()
-            pack.push({
-                x: player.x,
-                y: player.y,
-                number: player.number
-            })
-        }
+    var pack = Player.update()
+
     for(var i in SOCKET_LIST){
         var socket = SOCKET_LIST[i]
         socket.emit("newPositions", pack)

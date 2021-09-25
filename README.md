@@ -12,3 +12,6 @@ Package communication (Socket.io)
         mywebsite.com   :2000       /client/playerImg.png
 URL=    DOMAIN          PORT        PATH
         laptop          usbport     query
+
+NOTES:
+- Will need to better handle number of players with Sockets own api but for now we can just create a custom list.

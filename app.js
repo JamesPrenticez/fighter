@@ -29,6 +29,7 @@ class Entity {
     }
     update(){
         this.updatePosition();
+        this.updateSpeed();
     }
     updatePosition(){
         this.x += this.speedX;
@@ -47,7 +48,7 @@ class Player extends Entity{
         this.pressingLeft = pressingLeft,
         this.maxSpeed = 10
     }
-    updatePosition(){
+    updateSpeed(){
         if(this.pressingUp) this.y -= this.maxSpeed 
         if(this.pressingDown) this.y += this.maxSpeed 
         if(this.pressingRight) this.x += this.maxSpeed 
@@ -61,12 +62,9 @@ io.sockets.on("connection", function(socket){
     socket.id = Math.random();
     console.log("Socket connected " + socket.id)
     SOCKET_LIST[socket.id] = socket;
-
-
-
-    var playerNumber =  SOCKET_LIST.toString().indexOf(socket.id)
-    var player = new Player(name = "bob", number = Math.floor(10 * Math.random()))
-    //console.log(player)
+    
+    var numberOfPlayers =  Object.keys(PLAYER_LIST).length + 1
+    var player = new Player(name = "bob", number = numberOfPlayers)
     PLAYER_LIST[socket.id] = player
 
     socket.on("disconnect", function(){
@@ -88,7 +86,7 @@ setInterval(function(){
     var pack = [];
     for(var i in PLAYER_LIST){
             var player = PLAYER_LIST[i]
-            player.updatePosition()
+            player.update()
             pack.push({
                 x: player.x,
                 y: player.y,

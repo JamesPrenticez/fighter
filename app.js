@@ -19,16 +19,32 @@ console.log("Server started on port: " + PORT)
 var SOCKET_LIST = {};
 var PLAYER_LIST = {};
 
-class Player {
-    constructor(){
-        this.x = 250,
-        this.y = 250,
-        this.id = this.id,
-        this.number = "" + Math.floor(10 * Math.random()),
-        this.pressingUp = false,
-        this.pressingDown = false,
-        this.pressingRight = false,
-        this.pressingLeft = false,
+class Entity {
+    constructor(x = 250, y = 250, speedX = 0, speedY = 0, id = ""){
+        this.x = x,
+        this.y = y,
+        this.speedX = speedX,
+        this.speedY = speedY,
+        this.id = id 
+    }
+    update(){
+        this.updatePosition();
+    }
+    updatePosition(){
+        this.x += this.speedX;
+        this.y += this.speedY;
+    }
+}
+
+class Player extends Entity{
+    constructor(name = "james", number = 1, pressingUp = false, pressingDown = false, pressingRight = false, pressingLeft = false){
+        super()
+        this.name = name
+        this.number = number,
+        this.pressingUp = pressingUp,
+        this.pressingDown = pressingDown,
+        this.pressingRight = pressingRight,
+        this.pressingLeft = pressingLeft,
         this.maxSpeed = 10
     }
     updatePosition(){
@@ -46,7 +62,11 @@ io.sockets.on("connection", function(socket){
     console.log("Socket connected " + socket.id)
     SOCKET_LIST[socket.id] = socket;
 
-    var player = new Player(socket.id)
+
+
+    var playerNumber =  SOCKET_LIST.toString().indexOf(socket.id)
+    var player = new Player(name = "bob", number = Math.floor(10 * Math.random()))
+    //console.log(player)
     PLAYER_LIST[socket.id] = player
 
     socket.on("disconnect", function(){

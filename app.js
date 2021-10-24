@@ -15,52 +15,41 @@ server.listen(PORT)
 console.log("Server started on port: " + PORT)
 
 // SOCKET.IO
-
-var SOCKET_LIST = {};
-var PLAYER_LIST = {};
-
-class Entity {
-    constructor(x = 250, y = 250, speedX = 0, speedY = 0, id = ""){
-        this.x = x,
-        this.y = y,
-        this.speedX = speedX,
-        this.speedY = speedY,
-        this.id = id 
-    }
-    superUpdate(){
-        this.updatePosition();
-        this.updateSpeed();
-    }
-    updatePosition(){
-        this.x += this.speedX;
-        this.y += this.speedY;
-    }
-}
+var SOCKET_LIST = {}
 
 // ---------- PLayer ---------- 
-class Player extends Entity{
-    constructor(name = "james", number = 1, pressingUp = false, pressingDown = false, pressingRight = false, pressingLeft = false){
-        super()
-        this.name = name
+class Player{
+    constructor(id, number = 1){
+        this.id = id
+        this.x = 250,
+        this.y = 250,
         this.number = number,
-        this.pressingUp = pressingUp,
-        this.pressingDown = pressingDown,
-        this.pressingRight = pressingRight,
-        this.pressingLeft = pressingLeft,
-        this.maxSpeed = 10
+        this.pressingUp = false,
+        this.pressingDown = false,
+        this.pressingRight = false,
+        this.pressingLeft = false,
+        this.maxSpeed = 20
     }
-    updateSpeed(){
-        if(this.pressingUp) this.y -= this.maxSpeed 
+
+    update(){
+        this.updatePosition()
+    }
+
+    updatePosition(){
+        if(this.pressingUp) this.y -= this.maxSpeed
         if(this.pressingDown) this.y += this.maxSpeed 
         if(this.pressingRight) this.x += this.maxSpeed 
         if(this.pressingLeft) this.x -= this.maxSpeed 
     }
 }
 
+Player.list = {}
+
 Player.onConnect = (socket) => {
-    var numberOfPlayers =  Object.keys(PLAYER_LIST).length + 1
-    var player = new Player(name = "bob", number = numberOfPlayers)
-    PLAYER_LIST[socket.id] = player
+    var numberOfPlayers =  Object.keys(Player.list).length + 1
+    var player = new Player(id = socket.id, number = numberOfPlayers)
+    Player.list[socket.id] = player
+    console.log("There are " + Object.keys(Player.list).length + " players online")
 
     socket.on("keyPress", function(data){
         if(data.inputId === "up") player.pressingUp = data.state;
@@ -73,18 +62,72 @@ Player.onConnect = (socket) => {
 Player.onDisconnect = (socket) => {
     console.log("Socket disconnected " + socket.id)
     delete SOCKET_LIST[socket.id]
-    delete PLAYER_LIST[socket.id]
+    delete Player.list[socket.id]
+    console.log("There are " + Object.keys(Player.list).length + " players online")
 }
 
 Player.update = () => {
     var pack = [];
-    for(var i in PLAYER_LIST){
-        var player = PLAYER_LIST[i]
-        player.superUpdate()
+    for(var i in Player.list){
+        var player = Player.list[i]
+        player.update()
         pack.push({
             x: player.x,
             y: player.y,
             number: player.number
+        })
+    }
+    return pack;
+}
+
+// ---------- Bullets ---------- 
+class Bullet{
+    constructor(){
+        this.id = Math.random();
+        this.x = 250,
+        this.y = 250,
+        this.angle = Math.random()*360;
+        this.speedX = Math.cos(this.angle/180*Math.PI)*10;
+        this.speedY = Math.sin(this.angle/180*Math.PI)*10;
+        this.timer = 0
+        this.remove = false
+        this.color = `#${Math.floor(Math.random()*16777215).toString(16)}`
+    }
+
+    update(){
+        this.updatePosition()
+        //this.addToList
+    }
+
+    updatePosition(){
+        if(this.timer++ > 100) this.remove = true
+        this.x = this.x + this.speedX
+        this.y = this.y + this.speedY
+    }
+
+    // addToList(){
+    //     Bullet.list[this.id] = Bullet
+    // }
+}
+
+Bullet.list = {}
+
+Bullet.update = () => {
+    if (Math.random() < 0.1) {
+        var bullet = new Bullet()
+        Bullet.list[bullet.id] = bullet
+        //console.log(bullet)
+    }
+
+    var pack = [];
+    for(var i in Bullet.list){
+        var bullet = Bullet.list[i]
+        //console.log(Bullet.list[i])
+        bullet.updatePosition()
+        pack.push({
+            x: bullet.x,
+            y: bullet.y,
+            color: bullet.color
         })
     }
     return pack;
@@ -102,13 +145,14 @@ io.sockets.on("connection", function(socket){
     socket.on("disconnect", function(){
         Player.onDisconnect(socket)
     })
-
-
 })
 
 // For every player connected loop through SOCKETLIST and update there position
 setInterval(function(){
-    var pack = Player.update()
+    var pack = {
+        player: Player.update(),   
+        bullet: Bullet.update()
+    }
 
     for(var i in SOCKET_LIST){
         var socket = SOCKET_LIST[i]

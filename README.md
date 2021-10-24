@@ -1,6 +1,8 @@
 # fighter
 
-https://www.youtube.com/playlist?list=PLWYpfG6VFQl4xbkPd2YWjt4NgPtfpd652
+``` node app.js ```
+
+https://scripterswar.com/tutorial/nodejs
 
 File communication (Express)
     Client asks server for a file (eg: playerImg.png)

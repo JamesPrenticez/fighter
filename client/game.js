@@ -29,3 +29,17 @@ document.onkeyup = (event) => {
   else if (event.keyCode === 68) socket.emit("keyPress", {inputId:"right", state: false}); // d
   else if (event.keyCode === 65) socket.emit("keyPress", {inputId:"left", state: false}); // a
 }
+document.onmousedown = (event) => {
+  if (event.button === 0) socket.emit("keyPress", {inputId:"attack", state: true}) //left click
+  else if (event.button === 1) console.log("middle button")
+  else if (event.button === 2) socket.emit("right click") 
+}
+document.onmouseup = (event) => {
+  if (event.button === 0) socket.emit("keyPress", {inputId:"attack", state: false}) //left click
+}
+document.onmousemove = (event) => {
+  var x = -250 + event.clientX - 8
+  var y = -250 + event.clientY - 8
+  var angle = Math.atan2(y,x) / Math.PI * 180
+  socket.emit("keyPress", {inputId:"mouseAngle", state:angle})
+}

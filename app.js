@@ -18,7 +18,7 @@ var SOCKET_LIST = {}
 
 // ---------- PLayer ---------- 
 class Player{
-    constructor(id, number = 1){
+    constructor(id, number = 1, mouseAngle = 0){
         this.id = id
         this.x = 250,
         this.y = 250,
@@ -27,11 +27,14 @@ class Player{
         this.pressingDown = false,
         this.pressingRight = false,
         this.pressingLeft = false,
+        this.pressingAttack = false,
+        this.mouseAngle = mouseAngle,
         this.maxSpeed = 20
     }
 
     update(){
         this.updatePosition()
+        this.shootArrow()
     }
 
     updatePosition(){
@@ -39,6 +42,13 @@ class Player{
         if(this.pressingDown) this.y += this.maxSpeed 
         if(this.pressingRight) this.x += this.maxSpeed 
         if(this.pressingLeft) this.x -= this.maxSpeed 
+    }
+
+    shootArrow(){
+        if (this.pressingAttack === true) {
+            var bullet = new Bullet(this.x, this.y, this.mouseAngle)
+            Bullet.list[bullet.id] = bullet
+        }
     }
 }
 
@@ -55,6 +65,8 @@ Player.onConnect = (socket) => {
         else if(data.inputId === "down") player.pressingDown = data.state;
         else if(data.inputId === "right") player.pressingRight = data.state;
         else if(data.inputId === "left") player.pressingLeft = data.state;
+        else if(data.inputId === "attack") player.pressingAttack = data.state;
+        else if(data.inputId === "mouseAngle") player.mouseAngle = data.state;
     })
 }
 
@@ -81,11 +93,11 @@ Player.update = () => {
 
 // ---------- Bullets ---------- 
 class Bullet{
-    constructor(){
+    constructor(x, y, angle){
         this.id = Math.random();
-        this.x = 250,
-        this.y = 250,
-        this.angle = Math.random()*360;
+        this.x = x,
+        this.y = y,
+        this.angle = angle;
         this.speedX = Math.cos(this.angle/180*Math.PI)*10;
         this.speedY = Math.sin(this.angle/180*Math.PI)*10;
         this.timer = 0
@@ -94,8 +106,7 @@ class Bullet{
     }
 
     update(){
-        this.updatePosition()
-        //this.addToList
+        this.update()
     }
 
     updatePosition(){
@@ -103,20 +114,12 @@ class Bullet{
         this.x = this.x + this.speedX
         this.y = this.y + this.speedY
     }
-
-    // addToList(){
-    //     Bullet.list[this.id] = Bullet
-    // }
 }
 
 Bullet.list = {}
 
 Bullet.update = () => {
-    if (Math.random() < 0.1) {
-        var bullet = new Bullet()
-        Bullet.list[bullet.id] = bullet
-        //console.log(bullet)
-    }
+
 
     var pack = [];
     for(var i in Bullet.list){
@@ -152,6 +155,18 @@ io.sockets.on("connection", (socket) => {
         for (var i in SOCKET_LIST){
             SOCKET_LIST[i].emit("recieveMessage", playerName + ": " + data)
         }
+    });
+
+    socket.on("sendCommand", (command) => {
+        if (command === "help"){
+            result = "We would love to help you - /players"
+        }
+        else if (command === "players"){
+            result = "There are " + Object.keys(Player.list).length + " players online"
+        } else {
+            result = "Try /help for a list of commands"
+        }
+        socket.emit("recieveCommand", result)
     });
 })
 

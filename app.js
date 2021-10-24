@@ -8,8 +8,7 @@ app.get("/", function(req, res){
     res.sendFile(__dirname + "/client/index.html");
 })
 
-app.use("/client", express.static(__dirname + "/client"));
-
+app.use(express.static(__dirname + '/client'));
 server.listen(PORT)
 
 console.log("Server started on port: " + PORT)
@@ -136,15 +135,25 @@ Bullet.update = () => {
 // ---------- Socket ---------- 
 var io = require("socket.io")(server, {});
 
-io.sockets.on("connection", function(socket){
+io.sockets.on("connection", (socket) => {
+    
     socket.id = Math.random();
-    console.log("Socket connected " + socket.id)
+    console.log("Socket connected " + socket.id);
     SOCKET_LIST[socket.id] = socket;
-    Player.onConnect(socket)
-
-    socket.on("disconnect", function(){
-        Player.onDisconnect(socket)
-    })
+    
+    Player.onConnect(socket);
+    
+    socket.on("disconnect", () => {
+        Player.onDisconnect(socket);
+    });
+    
+    socket.on("sendMessage", (data) => {
+        console.log(data); // world
+        var playerName = ("" + socket.id).slice(2,7)
+        for (var i in SOCKET_LIST){
+            SOCKET_LIST[i].emit("sendMessage", playerName + ": " + data)
+        }
+    });
 })
 
 // For every player connected loop through SOCKETLIST and update there position

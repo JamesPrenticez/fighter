@@ -148,10 +148,9 @@ io.sockets.on("connection", (socket) => {
     });
     
     socket.on("sendMessage", (data) => {
-        console.log(data); // world
         var playerName = ("" + socket.id).slice(2,7)
         for (var i in SOCKET_LIST){
-            SOCKET_LIST[i].emit("sendMessage", playerName + ": " + data)
+            SOCKET_LIST[i].emit("recieveMessage", playerName + ": " + data)
         }
     });
 })

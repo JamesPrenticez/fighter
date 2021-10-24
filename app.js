@@ -18,7 +18,7 @@ var SOCKET_LIST = {}
 
 // ---------- PLayer ---------- 
 class Player{
-    constructor(id, number = 1, mouseAngle = 0){
+    constructor(id, number = 1, clientX, clientY){
         this.id = id
         this.x = 250,
         this.y = 250,
@@ -28,7 +28,8 @@ class Player{
         this.pressingRight = false,
         this.pressingLeft = false,
         this.pressingAttack = false,
-        this.mouseAngle = mouseAngle,
+        this.clientX = clientX,
+        this.clientY = clientY,
         this.maxSpeed = 20
     }
 
@@ -46,7 +47,12 @@ class Player{
 
     shootArrow(){
         if (this.pressingAttack === true) {
-            var bullet = new Bullet(this.x, this.y, this.mouseAngle)
+            var angle = Math.atan2(
+                this.clientY - this.y,
+                this.clientX - this.x
+            ) / Math.PI * 180
+
+            var bullet = new Bullet(this.x, this.y, angle)
             Bullet.list[bullet.id] = bullet
         }
     }
@@ -66,7 +72,8 @@ Player.onConnect = (socket) => {
         else if(data.inputId === "right") player.pressingRight = data.state;
         else if(data.inputId === "left") player.pressingLeft = data.state;
         else if(data.inputId === "attack") player.pressingAttack = data.state;
-        else if(data.inputId === "mouseAngle") player.mouseAngle = data.state;
+        else if(data.inputId === "clientX") player.clientX = data.state;
+        else if(data.inputId === "clientY") player.clientY = data.state;
     })
 }
 
@@ -110,7 +117,6 @@ class Bullet{
     }
 
     updatePosition(){
-        if(this.timer++ > 100) this.remove = true
         this.x = this.x + this.speedX
         this.y = this.y + this.speedY
     }

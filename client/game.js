@@ -38,8 +38,6 @@ document.onmouseup = (event) => {
   if (event.button === 0) socket.emit("keyPress", {inputId:"attack", state: false}) //left click
 }
 document.onmousemove = (event) => {
-  var x = -250 + event.clientX - 8
-  var y = -250 + event.clientY - 8
-  var angle = Math.atan2(y,x) / Math.PI * 180
-  socket.emit("keyPress", {inputId:"mouseAngle", state:angle})
+  socket.emit("keyPress", {inputId:"clientX", state:event.clientX})
+  socket.emit("keyPress", {inputId:"clientY", state:event.clientY})
 }

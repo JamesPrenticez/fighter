@@ -28,6 +28,7 @@ class Player{
         this.pressingRight = false,
         this.pressingLeft = false,
         this.pressingAttack = false,
+        this.cooldown = false,
         this.clientX = clientX,
         this.clientY = clientY,
         this.maxSpeed = 20
@@ -35,7 +36,7 @@ class Player{
 
     update(){
         this.updatePosition()
-        this.shootArrow()
+        this.shootBullet()
     }
 
     updatePosition(){
@@ -45,17 +46,23 @@ class Player{
         if(this.pressingLeft) this.x -= this.maxSpeed 
     }
 
-    shootArrow(){
-        if (this.pressingAttack === true) {
+    shootBullet(){
+        if (this.pressingAttack === true && this.cooldown === false) {
             var angle = Math.atan2(
                 this.clientY - this.y,
                 this.clientX - this.x
             ) / Math.PI * 180
 
-            var bullet = new Bullet(this.x, this.y, angle)
+            var bullet = new Bullet(this.x, this.y, this.id, angle)
             Bullet.list[bullet.id] = bullet
+
+            this.cooldown = true;
+            setTimeout(() => this.cooldown = false, 300);
         }
     }
+    
+
+
 }
 
 Player.list = {}
@@ -100,10 +107,11 @@ Player.update = () => {
 
 // ---------- Bullets ---------- 
 class Bullet{
-    constructor(x, y, angle){
+    constructor(x, y, owner, angle){
         this.id = Math.random();
         this.x = x,
         this.y = y,
+        this.owner = owner
         this.angle = angle;
         this.speedX = Math.cos(this.angle/180*Math.PI)*10;
         this.speedY = Math.sin(this.angle/180*Math.PI)*10;
@@ -113,25 +121,41 @@ class Bullet{
     }
 
     update(){
-        this.update()
+        this.updatePosition()
+        this. checkCollision()
+
     }
 
     updatePosition(){
+        if(this.timer++ > 100) this.remove = true
         this.x = this.x + this.speedX
         this.y = this.y + this.speedY
+    }
+
+    getDistance(point){
+        return Math.sqrt(Math.pow(this.x - point.x,2) + Math.pow(this.y - point.y,2))
+    }
+
+    checkCollision(){
+        for(var i in Player.list){
+            var player = Player.list[i]
+            if(this.getDistance(player) < 32 && this.owner !== player.id){
+                //handle collision eg. hp--
+                this.remove = true
+            }
+        }
     }
 }
 
 Bullet.list = {}
 
 Bullet.update = () => {
-
-
     var pack = [];
     for(var i in Bullet.list){
         var bullet = Bullet.list[i]
         //console.log(Bullet.list[i])
-        bullet.updatePosition()
+        bullet.update()
+        if(bullet.remove === true) delete Bullet.list[i]
         pack.push({
             x: bullet.x,
             y: bullet.y,

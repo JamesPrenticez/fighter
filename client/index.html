@@ -4,21 +4,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="/socket.io/socket.io.js" defer></script>
-  <!-- <script src="wtf.js" defer></script> -->
+  <script src="login.js" defer></script>
   <script src="game.js" defer></script>
   <script src="chat.js" defer></script>
   <title>Document</title>
 </head>
 
 <body>
-  <canvas id="ctx" width="500" height="500" style="border: 1px solid gold"></canvas>
-  <div id="chat-box" style="background-color: lightgray; width: 500px; height: 250px; overflow-y: scroll;">
-    <p>Welcome to the Sand Casino!</p>
-  </div>
-  <form id="chat-form" action="">
-    <input id="chat-input" style="width: 500px"></input>
-  </form>
+  <main class="flex justify-center">
+    <div class="flex-col">
+      <canvas 
+        id="canvas"
+        width="500"
+        height="500"
+        class="border-2 border-gray-600 select-none"
+      >
+      </canvas>
+      
+      <form id="login-form" action="" class="bg-gray-300 w-full">
+        <p>Username:</p>
+        <input id="username" type="text" />
+        
+        <p>Password:</p>
+        <input id="password" type="password" />
+        
+        <button id="sign-up">Sign Up</button>
+        <button id="sign-in">Sign In</button>
+      </form>
+    
+      <p>Client</p>
+      <p id="clientX"></p>
+      <p id="clientY"></p>
+
+      <p>Screen</p>
+      <p id="screenX"></p>
+      <p id="screenY"></p>
+    
+      <div class="w-[500px] h-[250px]">
+        <div id="chat-box" class="bg-gray-300 overflow-y-scroll w-full h-full">
+          <p>Welcome to the Sand Casino!</p>
+        </div>
+        <form id="chat-form" action="">
+          <input id="chat-input" class="bg-gray-500 w-full"/>
+        </form>
+      </div>
+    
+    </div>
+  </main>
+
+
 </body>
 
 </html>

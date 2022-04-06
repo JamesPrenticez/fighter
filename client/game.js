@@ -1,11 +1,9 @@
-var canvas = document.getElementById("canvas");
+let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 let x = document.getElementById("clientX");
 let y = document.getElementById("clientY");
 let active = false
 ctx.font = "50px Arial"
-
-const socket = io();
 
 //recieve from the server
 socket.on("newPositions", function(data){

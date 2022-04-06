@@ -1,8 +1,8 @@
 // EXPRESS
-var express = require("express");
-var app = express();
-var server = require("http").Server(app)
-var PORT = 3000
+let express = require("express");
+let app = express();
+let server = require("http").Server(app)
+let PORT = 3000
 let canvasX = 500
 let canvasY = 500
 
@@ -185,8 +185,15 @@ io.sockets.on("connection", (socket) => {
     console.log("Socket connected " + socket.id);
     SOCKET_LIST[socket.id] = socket;
     
-    Player.onConnect(socket);
-    
+    socket.on("login", (data) => {
+        if(data.username === "asdf" && data.password === "asdf"){
+            Player.onConnect(socket);
+            socket.emit("loginResponse", {success: true})
+        } else {
+            socket.emit("loginResponse", {success: false})
+        }
+    });
+
     socket.on("disconnect", () => {
         Player.onDisconnect(socket);
     });

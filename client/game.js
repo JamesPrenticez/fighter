@@ -2,10 +2,8 @@ var canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 let x = document.getElementById("clientX");
 let y = document.getElementById("clientY");
-let xx = document.getElementById("screenX");
-let yy = document.getElementById("screenY");
 let active = false
-ctx.font = "30px Arial"
+ctx.font = "50px Arial"
 
 const socket = io();
 
@@ -13,12 +11,19 @@ const socket = io();
 socket.on("newPositions", function(data){
     ctx.clearRect(0,0,500,500)
     for(var i = 0; i < data.player.length; i++){
-      ctx.fillStyle = 'black'
-      ctx.fillText(data.player[i].number, data.player[i].x, data.player[i].y)
+      ctx.beginPath();
+      ctx.fillStyle = 'green'
+      ctx.strokeStyle = 'green'
+      ctx.arc(data.player[i].x, data.player[i].y, 25, 0, 2 * Math.PI);
+      ctx.stroke()
+      ctx.fill()
+      //ctx.fillRect(data.player[i].x-25, data.player[i].y-25, 50, 50)
+      ctx.fillStyle = "red";
+      ctx.fillText(data.player[i].number, data.player[i].x-15, data.player[i].y+15)
     }
     for(var i = 0; i < data.bullet.length; i++){
       ctx.fillStyle = data.bullet[i].color
-      ctx.fillRect(data.bullet[i].x-5, data.bullet[i].y-5, 10,10)
+      ctx.fillRect(data.bullet[i].x-5, data.bullet[i].y-5, 10, 10)
     }
 })
 
@@ -26,13 +31,11 @@ socket.on("newPositions", function(data){
 canvas.onmouseenter = () => {
   active = true
   canvas.style.borderColor = "green"
-  console.log(active)
 }
 
 canvas.onmouseleave = () => {
   active = false
   canvas.style.borderColor = "red"
-  console.log(active)
 }
 
 document.onkeydown = (event) => {
@@ -65,12 +68,11 @@ canvas.onmouseup = (event) => {
 
 canvas.onmousemove = (event) => {
   if(!active) return
-  let screenLocation = canvas.getBoundingClientRect();
-  x.innerText  = "x: " + event.clientX;
-  y.innerText  = "y: " + event.clientY;
 
-  xx.innerText  = "x: " + event.screenX;
-  yy.innerText  = "y: " + event.screenY;
+  let screenLocation = canvas.getBoundingClientRect();
+
+  x.innerText  = "x: " + (event.clientX - screenLocation.x);
+  y.innerText  = "y: " + (event.clientY - screenLocation.y);
 
   socket.emit("keyPress", {inputId:"clientX", state: (event.clientX - screenLocation.x)})
   socket.emit("keyPress", {inputId:"clientY", state: (event.clientY - screenLocation.y)})

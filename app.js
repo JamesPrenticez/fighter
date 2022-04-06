@@ -3,6 +3,8 @@ var express = require("express");
 var app = express();
 var server = require("http").Server(app)
 var PORT = 3000
+let canvasX = 500
+let canvasY = 500
 
 app.get("/", function(req, res){
     res.sendFile(__dirname + "/client/index.html");
@@ -22,6 +24,7 @@ class Player{
         this.id = id
         this.x = 250,
         this.y = 250,
+        this.r = 25,
         this.number = number,
         this.pressingUp = false,
         this.pressingDown = false,
@@ -32,6 +35,7 @@ class Player{
         this.clientX = clientX,
         this.clientY = clientY,
         this.maxSpeed = 20
+
     }
 
     update(){
@@ -40,10 +44,17 @@ class Player{
     }
 
     updatePosition(){
+        // Increase/decrease x/y coordinates
+        if(this.pressingLeft) this.x -= this.maxSpeed 
+        if(this.pressingRight) this.x += this.maxSpeed 
         if(this.pressingUp) this.y -= this.maxSpeed
         if(this.pressingDown) this.y += this.maxSpeed 
-        if(this.pressingRight) this.x += this.maxSpeed 
-        if(this.pressingLeft) this.x -= this.maxSpeed 
+
+        // Keep within canvas bounds
+        if (this.x - this.r < 0.0) { this.x = this.r;} // Left boundary: x:0
+        if (this.x + this.r > canvasX) {this.x = canvasX - this.r} // Right boundary: x:500
+        if (this.y - this.r < 0.0) { this.y = this.r } // Top boundary: y:0
+        if (this.y + this.r > canvasY) { this.y = canvasY - this.r } // Bottom boundary: y:500
     }
 
     shootBullet(){
@@ -122,7 +133,7 @@ class Bullet{
 
     update(){
         this.updatePosition()
-        this. checkCollision()
+        this.checkCollision()
 
     }
 

@@ -1,19 +1,8 @@
-// EXPRESS
-let express = require("express");
-let app = express();
-let server = require("http").Server(app)
-let PORT = 3000
+let server = require('./index.js');
+let io = server.io
+
 let canvasX = 500
 let canvasY = 500
-
-app.get("/", function(req, res){
-    res.sendFile(__dirname + "/client/index.html");
-})
-
-app.use(express.static(__dirname + '/client'));
-server.listen(PORT)
-
-console.log("Server started on port: " + PORT)
 
 // SOCKET.IO
 var SOCKET_LIST = {}
@@ -35,7 +24,6 @@ class Player{
         this.clientX = clientX,
         this.clientY = clientY,
         this.maxSpeed = 20
-
     }
 
     update(){
@@ -177,20 +165,48 @@ Bullet.update = () => {
 }
 
 // ---------- Socket ---------- 
-var io = require("socket.io")(server, {});
+
+
+
+let USERS = {
+    //username:password
+    "asdf":"asdf",
+    "asdf1":"asdf",
+    "asdf2":"asdf"
+  }
+  
+let isValidPassword = (data) => {
+    return USERS[data.username] === data.password
+}
+
+let isUsernameTaken = (data) => {
+    return USERS[data.username]
+}
+
+let addUser = (data) => {
+    USERS[data.username] = data.password
+}
 
 io.sockets.on("connection", (socket) => {
-    
     socket.id = Math.random();
     console.log("Socket connected " + socket.id);
     SOCKET_LIST[socket.id] = socket;
     
     socket.on("login", (data) => {
-        if(data.username === "asdf" && data.password === "asdf"){
+        if(isValidPassword(data)){
             Player.onConnect(socket);
             socket.emit("loginResponse", {success: true})
         } else {
             socket.emit("loginResponse", {success: false})
+        }
+    });
+
+    socket.on("register", (data) => {
+        if(isUsernameTaken(data)){
+            socket.emit("registrationResponse", {success: false})
+        } else {
+            addUser(data)
+            socket.emit("registrationResponse", {success: true})
         }
     });
 

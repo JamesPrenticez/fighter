@@ -4,7 +4,8 @@
   "description": "https://www.youtube.com/watch?v=PfSwUOBL1YQ&t=3s",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node server/index.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,8 @@
   "homepage": "https://github.com/JamesPrenticez/fighter#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "socket.io": "^4.2.0"
+    "knex": "^0.21.6",
+    "socket.io": "^4.2.0",
+    "sqlite3": "^5.0.2"
   }
 }

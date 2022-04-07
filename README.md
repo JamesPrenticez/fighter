@@ -1,6 +1,8 @@
 # fighter
 
 ``` node app.js ```
+OR
+``` npm run dev ```
 
 https://scripterswar.com/tutorial/nodejs
 https://www.youtube.com/watch?v=GVuU25pGaYo&t=499s
@@ -18,3 +20,12 @@ URL=    DOMAIN          PORT        PATH
 
 NOTES:
 - Will need to better handle number of players with Sockets own api but for now we can just create a custom list.
+
+
+
+
+# SQLITE3 Database w/ Knex
+- npx knex migrate:make users
+- npx knex migrate:latest
+- npx knex seed:run
+-

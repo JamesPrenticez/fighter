@@ -1,6 +1,9 @@
 let server = require('./index.js');
 let io = server.io
 
+//let db = require('./database')
+//db.addUser({username:"james", password:"adfasdf", email: "jimmy@gmail.com"})
+
 let canvasX = 500
 let canvasY = 500
 

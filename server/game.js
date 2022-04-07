@@ -1,8 +1,19 @@
 let server = require('./index.js');
 let io = server.io
 
-//let db = require('./database')
-//db.addUser({username:"james", password:"adfasdf", email: "jimmy@gmail.com"})
+let db = require('./database');
+const { resolve } = require('path');
+
+let add = () => {
+    let result = db.addUser({"username":"jibby", "password":"master", "email": "gm@gmail.com"})
+    .then(callback => JSON.parse(callback))
+    return result
+}
+
+//let a = db.getUsers().then(res => console.log(res))
+
+let auth = db.getUser({"username":"asdf", "password":"asdf"})
+console.log(auth)
 
 let canvasX = 500
 let canvasY = 500
@@ -171,14 +182,14 @@ Bullet.update = () => {
 
 
 
-let USERS = {
-    //username:password
-    "asdf":"asdf",
-    "asdf1":"asdf",
-    "asdf2":"asdf"
-  }
+// let USERS = {
+//     //username:password
+//     "asdf":"asdf",
+//     "asdf1":"asdf",
+//     "asdf2":"asdf"
+//   }
   
-let isValidPassword = (data) => {
+let isValidPassword = (data, cb) => {
     return USERS[data.username] === data.password
 }
 

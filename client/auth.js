@@ -31,13 +31,6 @@ socket.on('registrationResponse', (data) => {
   if(data.success){
     alert("Account created!")
   } else {
-    alert("Registration unsuccessful")
+    alert("Username already taken")
   }
 })
-
-
-function register(){
-  //prevent.default()
-  //socket.emit("signin", {username: usernameInput.value, password: passwordInput.value})
-  console.log("register")
-}

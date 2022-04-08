@@ -1,24 +1,35 @@
 let server = require('./index.js');
 let io = server.io
 
-// SQLITE 3
-const db = require("./database")
+//Mongo
+let mongojs = require("mongojs")
+let db = mongojs("localhost:27017/game", ["account", "progress"])
 
-//  let xyz
+var get = function(x,cb){
+	db.account.find({username:x},function(err,res){
+    
+    //db.getUser({x},function(err,res){
+        console.log(res)
+		if(res.length > 0)
+			cb(true);
+		else
+			cb(false);
+	});
+}
 
-// var test = (username, password) =>{
-//     db.getUser({username, password})
-//     .then((res) => {
-//         console.log(res)
-//         xyz = res
-//     }) 
-// }
+let xyz 
 
-// console.log(test("asdf", "asdf"))
+get("asdf",function(res){
+    if(res){
+        xyz = true
+    } else {
+        xyz = false
+    }
+})
 
-// setTimeout(() => {
-//     console.log('xyz', xyz)
-// }, 1000);
+setTimeout(() => {
+    console.log(xyz)
+}, 1000);
 
 let canvasX = 500
 let canvasY = 500
@@ -184,33 +195,26 @@ Bullet.update = () => {
 }
 
 // ---------- Socket ---------- 
-
 var isValidPassword = function(data,cb){
-	db.getUsernameAndPassword({username: data.username, password: data.password})
-        .then((res) => {
-            if(res.length > 0)
-                cb(true);
-            else
-                cb(false);
-            })
+	db.account.find({username:data.username,password:data.password},function(err,res){
+		if(res.length > 0)
+			cb(true);
+		else
+			cb(false);
+	});
 }
-
 var isUsernameTaken = function(data,cb){
-	db.getUsername({username: data.username})
-        .then((res) => {
-            if(res.length > 0)
-                cb(true);
-            else
-                cb(false);
-            })
+	db.account.find({username:data.username},function(err,res){
+		if(res.length > 0)
+			cb(true);
+		else
+			cb(false);
+	});
 }
-
-
-var addUser = function(data, cb){
-    db.addUser({username: data.username, password: data.username})
-    .then((res) => {
-      cb()
-    })
+var addUser = function(data,cb){
+	db.account.insert({username:data.username,password:data.password},function(err){
+		cb();
+	});
 }
 
 io.sockets.on("connection", (socket) => {

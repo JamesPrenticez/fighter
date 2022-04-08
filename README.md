@@ -28,4 +28,20 @@ NOTES:
 - npx knex migrate:make users
 - npx knex migrate:latest
 - npx knex seed:run
--
+
+# Mongo DB
+- cd C:/Program Files/MongoDB/Server/5.0/bin mongod - db server
+- cd C:/Program Files/MongoDB/Server/5.0/bin mongo - db client
+
+### Create
+- use game
+- db.createCollection("account");
+- db.createCollection("progress");
+- db.account.insert({username: "asdf", password: "asdf"});
+- db.progress.insert({username: "asdf", level: 123, questCompleted: ["quest1", "quest2", "quest3"]});
+### Read
+- db.account.find({username: "asdf"})
+- db.progress.find({username: "asdf"}, {questCompleted: true})
+- db.progress.find({username: "asdf"}, {level: true})
+### Update
+- db.progress.update({username: "asdf"}, {$set:{level:99}})

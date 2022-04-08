@@ -1,19 +1,64 @@
 let server = require('./index.js');
 let io = server.io
 
-let db = require('./database');
-const { resolve } = require('path');
+let mongojs = require("mongojs")
+let db = mongojs("localhost:27017/game", ["account", "progress"])
+//db.account.insert({username: "james", password: "asdf"});
+//console.log(db.account.find({username: "asdf"}))
 
-let add = () => {
-    let result = db.addUser({"username":"jibby", "password":"master", "email": "gm@gmail.com"})
-    .then(callback => JSON.parse(callback))
-    return result
+//const db = require("./database")
+
+var get = function(x,cb){
+	db.account.find({username:x},function(err,res){
+        console.log(res)
+		if(res.length > 0)
+			cb(true);
+		else
+			cb(false);
+	});
 }
 
-//let a = db.getUsers().then(res => console.log(res))
+let xyz 
 
-let auth = db.getUser({"username":"asdf", "password":"asdf"})
-console.log(auth)
+get("asdf",function(res){
+    if(res){
+        xyz = true
+    } else {
+        xyz = false
+    }
+})
+
+setTimeout(() => {
+    console.log(xyz)
+}, 1000);
+
+let adfadfasdf = (x, cb) => {
+    //db.account.find({ username: x }, function(err, res){ return callback(res) })
+    //db.getUser({ username }, function(err, res){ return callback(res) })
+    //return callback("hi")
+    //db.getUser({ username },  function(err, res){ return cb("hi") })
+    
+
+	// db.getUser({username}, function(err, res){
+    //     console.log(res)
+	// 	if(res.length > 0)
+	// 		return cb(true);
+	// 	else
+	// 		return cb(false);
+	// });
+}
+
+//console.log(get("asdf", (res) => { return res }))
+
+// ----------------------------
+// function example(callback) {
+//     return callback("hi");
+//   }
+  
+
+// console.log(example((res) => { return res }))
+
+
 
 let canvasX = 500
 let canvasY = 500
@@ -180,25 +225,56 @@ Bullet.update = () => {
 
 // ---------- Socket ---------- 
 
+// let isValidPassword = function(data, cb){
+//     db.account.find({username: data.username, password: data.password}, function(err, res){
+//         if(res.length > 0)
+//             cb(true)
+//         else 
+//             cb(false)
+//     })
+// }
 
+// let isUsernameTaken = function(data, cb){
+//     db.account.find({username: data.username}, function(err, res){
+//         if(res.length > 0)
+//             cb(true)
+//         else 
+//             cb(false)
+//     })
+// }
 
-// let USERS = {
-//     //username:password
-//     "asdf":"asdf",
-//     "asdf1":"asdf",
-//     "asdf2":"asdf"
-//   }
-  
-let isValidPassword = (data, cb) => {
-    return USERS[data.username] === data.password
+// let addUser = function(data, cb){
+//     db.account.insert({username: data.username, password: data.password}, function(err){
+//         cb()
+//     })
+// }
+
+// let result = db.account.find(function (err, docs) {
+//     return console.log(docs)// docs is an array of all the documents in mycollection
+// })
+
+//console.log(result)
+
+var isValidPassword = function(data,cb){
+	db.account.find({username:data.username,password:data.password},function(err,res){
+		if(res.length > 0)
+			cb(true);
+		else
+			cb(false);
+	});
 }
-
-let isUsernameTaken = (data) => {
-    return USERS[data.username]
+var isUsernameTaken = function(data,cb){
+	db.account.find({username:data.username},function(err,res){
+		if(res.length > 0)
+			cb(true);
+		else
+			cb(false);
+	});
 }
-
-let addUser = (data) => {
-    USERS[data.username] = data.password
+var addUser = function(data,cb){
+	db.account.insert({username:data.username,password:data.password},function(err){
+		cb();
+	});
 }
 
 io.sockets.on("connection", (socket) => {
@@ -207,21 +283,26 @@ io.sockets.on("connection", (socket) => {
     SOCKET_LIST[socket.id] = socket;
     
     socket.on("login", (data) => {
-        if(isValidPassword(data)){
-            Player.onConnect(socket);
-            socket.emit("loginResponse", {success: true})
-        } else {
-            socket.emit("loginResponse", {success: false})
-        }
+		isValidPassword(data,function(res){
+			if(res){
+				Player.onConnect(socket);
+				socket.emit('loginResponse',{success:true});
+			} else {
+				socket.emit('loginResponse',{success:false});			
+			}
+		});
     });
 
     socket.on("register", (data) => {
-        if(isUsernameTaken(data)){
-            socket.emit("registrationResponse", {success: false})
-        } else {
-            addUser(data)
-            socket.emit("registrationResponse", {success: true})
-        }
+        isUsernameTaken(data,function(res){
+			if(res){
+				socket.emit('registrationResponse',{success:false});		
+			} else {
+				addUser(data,function(){
+					socket.emit('registrationResponse',{success:true});					
+				});
+			}
+		});		
     });
 
     socket.on("disconnect", () => {

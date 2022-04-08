@@ -13,10 +13,8 @@ function getUsers() {
   return database("users").select("username")
 }
 
-function getUser({username, password}) {
-  if(!database("users").where({username, password})) return
-  return true
-
+function getUser({username}) {
+  return database("users").where({username})
 }
 
 function addUser({username, password, email}){

@@ -12,6 +12,15 @@ router.get("/api/users", (req, res) => {
   })
 })  
 
+router.get("/api/user/:username", (req, res) => {
+  const username = req.params.username
+  db.getUser({username})
+    .then(callback => res.status(200).json({user: callback}))
+    .catch(err => {
+       res.status(500).send(err)
+  })
+})  
+
 router.post("/api/user", (req, res) => {
   let {username, password, email} = req.body
   db.addUser({username, password, email})

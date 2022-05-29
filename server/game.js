@@ -1,5 +1,6 @@
 let server = require('./index.js');
 let io = server.io
+console.log(server)
 
 // SQLITE 3
 const db = require("./database")

@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node server/index.js"
+    "dev": "nodemon server/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "express": "^4.17.1",
     "knex": "^0.21.6",
     "mongojs": "^3.1.0",
+    "nodemon": "^2.0.16",
     "socket.io": "^4.2.0",
     "sqlite3": "^5.0.2"
   }

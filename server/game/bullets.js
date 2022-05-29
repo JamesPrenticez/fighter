@@ -1,3 +1,5 @@
+import Player from './player.js'
+
 // ---------- Bullets ---------- 
 export default class Bullet{
   constructor(x, y, owner, angle){

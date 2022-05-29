@@ -30,3 +30,4 @@ console.log("Server started on port: " + PORT)
 // ---- Socket
 import * as sockets from "./game/sockets.js"
 sockets.listen(io)
+sockets.update()

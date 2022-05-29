@@ -1,6 +1,8 @@
 let canvasX = 500
 let canvasY = 500
 
+import Bullet from './bullets.js'
+
 // ---------- PLayer ---------- 
 export default class Player{
   constructor(id, number = 1, clientX, clientY){
@@ -46,7 +48,7 @@ export default class Player{
               this.clientX - this.x
           ) / Math.PI * 180
 
-          var bullet = new Bullet(this.x, this.y, this.id, angle)
+          let bullet = new Bullet(this.x, this.y, this.id, angle)
           Bullet.list[bullet.id] = bullet
 
           this.cooldown = true;
@@ -55,3 +57,42 @@ export default class Player{
   }
 }
 
+Player.list = {}
+
+Player.onConnect = (socket) => {
+    var numberOfPlayers =  Object.keys(Player.list).length + 1
+    var player = new Player(socket.id, numberOfPlayers)
+    Player.list[socket.id] = player
+    console.log("There are " + Object.keys(Player.list).length + " players online")
+
+    socket.on("keyPress", function(data){
+        if(data.inputId === "up") player.pressingUp = data.state;
+        else if(data.inputId === "down") player.pressingDown = data.state;
+        else if(data.inputId === "right") player.pressingRight = data.state;
+        else if(data.inputId === "left") player.pressingLeft = data.state;
+        else if(data.inputId === "attack") player.pressingAttack = data.state;
+        else if(data.inputId === "clientX") player.clientX = data.state;
+        else if(data.inputId === "clientY") player.clientY = data.state;
+    })
+}
+
+Player.onDisconnect = (socket) => {
+    console.log("Socket disconnected " + socket.id)
+    delete SOCKET_LIST[socket.id]
+    delete Player.list[socket.id]
+    console.log("There are " + Object.keys(Player.list).length + " players online")
+}
+
+Player.update = () => {
+    var pack = [];
+    for(var i in Player.list){
+        var player = Player.list[i]
+        player.update()
+        pack.push({
+            x: player.x,
+            y: player.y,
+            number: player.number
+        })
+    }
+    return pack;
+}

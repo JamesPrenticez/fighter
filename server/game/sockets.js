@@ -60,14 +60,17 @@ export function listen(io){
 }
 
 // For every player connected loop through SOCKETLIST and update there position
-// setInterval(function(){
-//     let pack = {
-//         player: Player.update(),   
-//         bullet: Bullet.update()
-//     }
+export function update(){
+    setInterval(function(){
+        let pack = {
+            player: Player.update(),   
+            bullet: Bullet.update()
+        }
 
-//     for(var i in SOCKET_LIST){
-//         var socket = SOCKET_LIST[i]
-//         socket.emit("newPositions", pack)
-//     }
-// }, 1000/25) //25 times per second FPS?
+        for(let i in SOCKET_LIST){
+            let socket = SOCKET_LIST[i]
+            socket.emit("newPositions", pack)
+        }
+
+    }, 1000/25) //25 times per second FPS?
+}

@@ -1,8 +1,6 @@
-const express = require("express")
-const db = require("../database")
-const router = express.Router()
-
-module.exports = router
+ import express from "express"
+ import * as db from "../database.js"
+ export const router = express.Router()
 
 router.get("/api/users", (req, res) => {
   db.getUsers()

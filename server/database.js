@@ -1,32 +1,26 @@
 const environment = process.env.NODE_ENV || 'development'
-const config = require('../knexfile')[environment]
-const database = require('knex')(config)
 
-module.exports = {
-  getUsers,
-  getUsernameAndPassword,
-  getUsername,
-  addUser,
-  updateProgress,
-}
+import knex from 'knex'
+import config from '../knexfile.js'
+const database = knex(config[environment])
 
-function getUsers() {
+export function getUsers() {
   return database("users").select("username")
 }
 
-function getUsernameAndPassword({username, password}) {
+export function getUsernameAndPassword({username, password}) {
   return database("users").where({username, password})
 }
 
-function getUsername({username}) {
+export function getUsername({username}) {
   return database("users").where({username})
 }
 
-function addUser({username, password}){
+export function addUser({username, password}){
   return database("users").insert({username, password})
 }
 
-function updateProgress({id, progress}){
+export function updateProgress({id, progress}){
   if(!id) return Promise.reject("id must be correct")
   return database("users").where({id}).update({progress})
 }

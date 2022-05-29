@@ -1,45 +1,9 @@
-console.log("here")
-import path from 'path'
-import express from 'express'
-import { createServer } from "http";
-import { Server } from "socket.io";
-const app = express();
-const server = createServer(app);
-
-export const io1 = new Server(server, {});
-
-let PORT = 3000
-
-app.get("/", function(req, res){
-  res.sendFile(path.resolve() + "/server/public/index.html" );
-})
-
-app.use(express.json())
-app.use("/client", express.static(path + '/client'));
-app.use(express.static(path + '/server/public'))
-
-//Game Server Files
-import "./game/player.js"
-// 'C:\Users\prent\github\multiplayer_fighter_game\server\game\player'
-// 'C:\Users\prent\github\multiplayer_fighter_game\server\game\player.js'
-import "./game/bullets.js"
-import "./game/auth.js"
-//import "./game/sockets.js"
-
-//Routes
-// import * as users from './routes/users.js';
-// console.log(users)
-//app.use('/', users)
-
-server.listen(PORT)
-console.log("Server started on port: " + PORT)
-
-// ---------- Socket ---------- 
-
-let io = server
-//console.log(server.io)
+// SOCKET.IO
+import io from "../index.js"
+let io = server.io
 let SOCKET_LIST = {}
 
+// ---------- Socket ---------- 
 io.sockets.on("connection", (socket) => {
     socket.id = Math.random();
     console.log("Socket connected " + socket.id);

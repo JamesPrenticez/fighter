@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "https://www.youtube.com/watch?v=PfSwUOBL1YQ&t=3s",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node server/index.js"
+    "dev": "nodemon server/index.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "knex": "^0.21.6",
+    "nodemon": "^2.0.16",
     "socket.io": "^4.2.0",
     "sqlite3": "^5.0.2"
   }

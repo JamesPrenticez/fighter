@@ -18,8 +18,7 @@ class Player{
       Player.list[this.id] = this.id
   }
 }
-// var player = new Player(id = socket.id, number = numberOfPlayers)
-// Player.list[socket.id] = player
+
 Player.list = {}
 
 class Bullet{

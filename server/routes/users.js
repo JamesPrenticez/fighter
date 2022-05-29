@@ -1,8 +1,6 @@
-import express from "express"
-import * as db from "./users"
-export const router = express.Router()
-
-
+ import express from "express"
+ import * as db from "../database.js"
+ export const router = express.Router()
 
 router.get("/api/users", (req, res) => {
   db.getUsers()

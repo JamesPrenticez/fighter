@@ -1,5 +1,5 @@
 // ---------- Bullets ---------- 
-class Bullet{
+export default class Bullet{
   constructor(x, y, owner, angle){
     this.id = Math.random();
     this.x = x,

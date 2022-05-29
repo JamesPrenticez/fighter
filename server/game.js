@@ -4,22 +4,6 @@ let io = server.io
 // SQLITE 3
 const db = require("./database")
 
-//  let xyz
-
-// var test = (username, password) =>{
-//     db.getUser({username, password})
-//     .then((res) => {
-//         console.log(res)
-//         xyz = res
-//     }) 
-// }
-
-// console.log(test("asdf", "asdf"))
-
-// setTimeout(() => {
-//     console.log('xyz', xyz)
-// }, 1000);
-
 let canvasX = 500
 let canvasY = 500
 
@@ -78,9 +62,6 @@ class Player{
             setTimeout(() => this.cooldown = false, 300);
         }
     }
-    
-
-
 }
 
 Player.list = {}

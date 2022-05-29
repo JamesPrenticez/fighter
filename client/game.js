@@ -1,9 +1,47 @@
 let canvas = document.getElementById("canvas");
+let playerListButton = document.getElementById("player-list");
 let ctx = canvas.getContext("2d");
 let x = document.getElementById("clientX");
 let y = document.getElementById("clientY");
 let active = false
 ctx.font = "50px Arial"
+
+let playerList = {}
+
+class Player{
+  constructor(){
+      this.id = initPack.id,
+      this.x = initPack.x,
+      this.y = initPack.y,
+      this.r = initPack.r,
+      this.number = number
+      Player.list[this.id] = this.id
+  }
+}
+// var player = new Player(id = socket.id, number = numberOfPlayers)
+// Player.list[socket.id] = player
+Player.list = {}
+
+class Bullet{
+  constructor(){
+      this.id = initPack.id,
+      this.x = initPack.x,
+      this.y = initPack.y,
+      this.number = number
+      Bullet.list[this.id] = this.id
+  }
+}
+
+Bullet.list = {}
+
+playerListButton.onclick = () =>{
+  console.log('Player.list', Player.list)
+}
+//init
+
+//update
+
+//remove
 
 //recieve from the server
 socket.on("newPositions", function(data){

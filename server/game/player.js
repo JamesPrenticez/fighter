@@ -43,7 +43,7 @@ export default class Player{
 
   shootBullet(){
       if (this.pressingAttack === true && this.cooldown === false) {
-          var angle = Math.atan2(
+          let angle = Math.atan2(
               this.clientY - this.y,
               this.clientX - this.x
           ) / Math.PI * 180
@@ -60,8 +60,8 @@ export default class Player{
 Player.list = {}
 
 Player.onConnect = (socket) => {
-    var numberOfPlayers =  Object.keys(Player.list).length + 1
-    var player = new Player(socket.id, numberOfPlayers)
+    let numberOfPlayers =  Object.keys(Player.list).length + 1
+    let player = new Player(socket.id, numberOfPlayers)
     Player.list[socket.id] = player
     console.log("There are " + Object.keys(Player.list).length + " players online")
 
@@ -76,17 +76,16 @@ Player.onConnect = (socket) => {
     })
 }
 
-Player.onDisconnect = (socket) => {
+Player.onDisconnect = (socket, SOCKET_LIST) => {
     console.log("Socket disconnected " + socket.id)
-    delete SOCKET_LIST[socket.id]
     delete Player.list[socket.id]
     console.log("There are " + Object.keys(Player.list).length + " players online")
 }
 
 Player.update = () => {
-    var pack = [];
-    for(var i in Player.list){
-        var player = Player.list[i]
+    let pack = [];
+    for(let i in Player.list){
+        let player = Player.list[i]
         player.update()
         pack.push({
             x: player.x,

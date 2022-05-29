@@ -31,8 +31,8 @@ export default class Bullet{
   }
 
   checkCollision(){
-      for(var i in Player.list){
-          var player = Player.list[i]
+      for(let i in Player.list){
+          let player = Player.list[i]
           if(this.getDistance(player) < 32 && this.owner !== player.id){
               //handle collision eg. hp--
               this.remove = true
@@ -44,9 +44,9 @@ export default class Bullet{
 Bullet.list = {}
 
 Bullet.update = () => {
-  var pack = [];
-  for(var i in Bullet.list){
-      var bullet = Bullet.list[i]
+  let pack = [];
+  for(let i in Bullet.list){
+      let bullet = Bullet.list[i]
       //console.log(Bullet.list[i])
       bullet.update()
       if(bullet.remove === true) delete Bullet.list[i]

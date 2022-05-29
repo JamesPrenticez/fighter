@@ -21,7 +21,7 @@ export const isUsernameTaken = (data,cb) => {
 }
 
 export const addUser = (data, cb) => {
-  db.addUser({username: data.username, password: data.username})
+  db.addUser({username: data.username, password: data.password})
   .then((res) => {
     cb()
   })

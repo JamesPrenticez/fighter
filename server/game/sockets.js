@@ -36,11 +36,12 @@ export function listen(io){
 
         socket.on("disconnect", () => {
             Player.onDisconnect(socket);
+            delete SOCKET_LIST[socket.id]
         });
         
         socket.on("sendMessage", (data) => {
             let playerName = ("" + socket.id).slice(2,7)
-            for (var i in SOCKET_LIST){
+            for (let i in SOCKET_LIST){
                 SOCKET_LIST[i].emit("recieveMessage", playerName + ": " + data)
             }
         });

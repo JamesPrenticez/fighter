@@ -1,10 +1,10 @@
+const Bullet = require('./bullet.js')
+
 let canvasX = 500
 let canvasY = 500
 
-import Bullet from './bullets.js'
-
 // ---------- PLayer ---------- 
-export default class Player{
+class Player{
   constructor(id, number = 1, clientX, clientY){
       this.id = id
       this.x = 250,
@@ -57,41 +57,8 @@ export default class Player{
   }
 }
 
-Player.list = {}
 
-Player.onConnect = (socket) => {
-    let numberOfPlayers =  Object.keys(Player.list).length + 1
-    let player = new Player(socket.id, numberOfPlayers)
-    Player.list[socket.id] = player
-    console.log("There are " + Object.keys(Player.list).length + " players online")
 
-    socket.on("keyPress", function(data){
-        if(data.inputId === "up") player.pressingUp = data.state;
-        else if(data.inputId === "down") player.pressingDown = data.state;
-        else if(data.inputId === "right") player.pressingRight = data.state;
-        else if(data.inputId === "left") player.pressingLeft = data.state;
-        else if(data.inputId === "attack") player.pressingAttack = data.state;
-        else if(data.inputId === "clientX") player.clientX = data.state;
-        else if(data.inputId === "clientY") player.clientY = data.state;
-    })
-}
-
-Player.onDisconnect = (socket, SOCKET_LIST) => {
-    console.log("Socket disconnected " + socket.id)
-    delete Player.list[socket.id]
-    console.log("There are " + Object.keys(Player.list).length + " players online")
-}
-
-Player.update = () => {
-    let pack = [];
-    for(let i in Player.list){
-        let player = Player.list[i]
-        player.update()
-        pack.push({
-            x: player.x,
-            y: player.y,
-            number: player.number
-        })
-    }
-    return pack;
+module.exports = {
+    Player,
 }

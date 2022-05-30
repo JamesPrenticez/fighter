@@ -4,96 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="/socket.io/socket.io.js" defer></script>
-  <script src="/client/auth.js" defer></script>
-  <script src="/client/game.js" defer></script>
-  <script src="/client/chat.js" defer></script>
-  <title>Document</title>
+  <title>Sand Casino</title>
 </head>
 
 <body class="bg-gray-50 p-12">
-  <main class="flex justify-center">
-    <div class="flex-col">
-      
-      <div id="auth-container" class="flex justify-between w-[500px] h-[200px]">
-        <img class="h-full w-[50%]" src="./assets/camel.png" alt="camel">
-
-        <form 
-          id="auth-form"
-          action=""
-          class="flex-col w-full bg-yellow-300 p-3"
-        >
-        
-          <b>Username:</b>
-          <input 
-            id="username"
-            type="text"
-            placeholder="Username"
-            class="w-full focus:outline-none"  
-          />
-          
-          <b>Password:</b>
-          <input 
-            id="password"
-            type="password"
-            placeholder="Password"
-            class="w-full focus:outline-none" 
-          />
-          
-          <div class="flex w-full pt-3">
-            <div
-              id="register"
-              onclick="register()"
-              class="flex items-center justify-center w-[50%] bg-orange-500 hover:bg-orange-600 hover:cursor-pointer text-white"
-            >
-              Register
-            </div>
-            
-            <button 
-              id="login"
-              class="flex items-center justify-center w-[50%] bg-green-500 hover:bg-green-600 hover:cursor-pointer text-white"
-            >
-              Login
-          </button>
-          </div>
-        </form>
-      </div>
-
-      <div class="flex w-full space-x-3">
-        <p class="ml-auto" id="clientX"></p>
-        <p id="clientY"></p>
-      </div>
-
-      <canvas 
-        id="canvas"
-        width="500"
-        height="500"
-        class="border-2 border-gray-600 select-none box-border hidden"
-      >
-      </canvas>
-
-    
-      <div class="w-[500px] h-[200px]">
-        <div id="chat-box" class="bg-gray-300/80 overflow-y-scroll w-full h-full">
-          <p>Welcome to the Sand Casino!</p>
-        </div>
-
-        <form id="chat-form" action="" class="relative bg-yellow-100 w-full inline-flex rounded-sm">
-          <input id="chat-input" type="text" class="w-[80%] focus:outline-none" placeholder="Enter your message ...">
-          <button id="chat-button" type="submit" class="flex items-center justify-center w-[20%] bg-green-500 hover:bg-green-600 hover:cursor-pointer text-white">Send</button>
-        </form>
-
-      </div>
-      
-    </div>
-  </main>
-  
-  
-  <button id="player-list" class="w-20 bg-blue-500 text-white">
-    Player List
-  </button>
-
+  <div id="app"></div>
+  <script src="/bundle.js" defer></script>
 </body>
 
 </html>

@@ -7,6 +7,8 @@ OR
 https://scripterswar.com/tutorial/nodejs
 https://www.youtube.com/watch?v=GVuU25pGaYo&t=499s
 
+Episode 9: MongoDB Database - 10.54
+
 File communication (Express)
     Client asks server for a file (eg: playerImg.png)
 
@@ -25,3 +27,9 @@ NOTES:
 - npx knex migrate:make users
 - npx knex migrate:latest
 - npx knex seed:run
+
+react react-dom react-router-dom
+
+style-loader tailwindcss postcss-loader postcss css-loader autoprefixer @babel/preset-react
+
+@babel/core 

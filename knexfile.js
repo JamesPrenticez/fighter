@@ -1,19 +1,18 @@
-// Update with your config settings.
-
-export default {
+module.exports = {
   development: {
     client: 'sqlite3',
+    useNullAsDefault: 'true',
     connection: {
       filename: './dev.sqlite3'
-    },
-    useNullAsDefault: 'true'
+    }
   },
+
   test: {
     client: 'sqlite3',
+    useNullAsDefault: 'true',
     connection: {
       filename: ':memory:'
     },
-    useNullAsDefault: 'true'
   },
 
   staging: {
@@ -30,7 +29,6 @@ export default {
     migrations: {
       tableName: 'knex_migrations'
     },
-    useNullAsDefault: 'true'
   },
 
   production: {

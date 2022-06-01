@@ -41,3 +41,8 @@ https://dev.to/bravemaster619/how-to-prevent-multiple-socket-connections-and-eve
 
 ### Colors for the terminal becasue swag is important
 [colors](https://www.npmjs.com/package/colors)
+
+### Redux & React-Redux
+- to handle encrypting/decyrpting chat messages
+
+### Hash function - aes256

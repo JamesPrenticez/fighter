@@ -1,7 +1,7 @@
 const { addUserToRoom, getUserById, userDisconnect } = require("./dummyuser");
 
 //initializing the socket io connection 
-io.on("connection", (socket) => {
+io.on("connect", (socket) => {
   //for a new user joining the room
   socket.on("joinRoom", ({ username, roomname }) => {
     // create user
@@ -10,7 +10,7 @@ io.on("connection", (socket) => {
     socket.join(user.room);
 
     //display a welcome message to the user who joined a room
-    socket.emit("message", {
+    socket.emit("welcomeMessage", {
       userId: user.id,
       username: user.username,
       text: `Welcome ${user.username}`,
@@ -25,7 +25,7 @@ io.on("connection", (socket) => {
   })
 
   // user sending message
-  socket.on("chat", (text) => {
+  socket.on("sendMessage", (text) => {
     //gets the room user and the message they want to send
     const user = getUserById(socket.id)
 

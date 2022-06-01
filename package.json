@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.17.12",
+    "aes256": "^1.1.0",
     "autoprefixer": "^10.4.7",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
@@ -32,7 +33,9 @@
     "postcss-loader": "^7.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
+    "redux": "^4.2.0",
     "socket.io": "^4.2.0",
     "socket.io-client": "^4.5.1",
     "style-loader": "^3.3.1",

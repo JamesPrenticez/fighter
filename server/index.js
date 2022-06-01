@@ -1,7 +1,8 @@
+const color = require("colors");
 const app = require('./server.js')
 
-const PORT = process.env.PORT || 3000
+const port = process.env.PORT || 3000
 
-app.listen(PORT, () => {
-  console.log("Server started on port: " + PORT)
+app.listen(port, () => {
+  console.log(`Server is running on port: ${(port)} ` .magenta)
 })

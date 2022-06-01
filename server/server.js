@@ -1,12 +1,13 @@
-const path = require('path')
-const express = require('express')
 
+const path = require('path')
+
+const express = require('express')
 const app = express()
+const cors = require("cors");
 
 const http = require('http');
 const server = http.createServer(app);
 let io = require("socket.io")(server, {})
-
 
 /* ----- Webpack hot reloading - remove in production ----- */
 let webpack = require('webpack');
@@ -24,6 +25,9 @@ app.use(express.static(path.join(__dirname, './public')))
 // ------ Server api routes
 const router = require("./routes/users.js")
 app.use('/', router)
+
+// ------ Handel cross origin requests
+app.use(cors())
 
 // ------ Sockets
 const sockets = require("./game/sockets.js")

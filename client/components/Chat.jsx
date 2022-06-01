@@ -1,18 +1,20 @@
-import React, {useRef} from 'react'
-import { io } from 'socket.io-client'
+import React, {useState, useRef, useEffect} from 'react'
+import io from 'socket.io-client'
 
+let socket = io.connect('/')
 
 export default function Chat(){
-  let socket = io()
   const chatBox = useRef()
+  const [messages, setMessages] = useState(["Welcome to the Sand Casino!"])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   //scroll ChatBox to bottom
   function scrollToBottom() {
-    console.log("here")
-    let isScrolledToBottom = chatBox.scrollHeight - chatBox.clientHeight <= chatBox.scrollTop + 1
-    if (!isScrolledToBottom) {
-      chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
-    }
+    console.log(chatBox)
+    chatBox.current.scrollTo({top:  chatBox.current.scrollHeight})
   }
 
   //sendMessage
@@ -27,10 +29,9 @@ export default function Chat(){
   }
 
   const add = (event) => {
-    console.log(" here")
-    console.log(chatBox)
     event.preventDefault()
-    //chatBox.innerHTML = "hi"
+    let data = "test"
+    setMessages([...messages, data])
   }
 
   //recieveMessage
@@ -49,8 +50,14 @@ export default function Chat(){
 
   return (
     <div className="w-[500px] h-[200px]">
-      <div id="chat-box" ref={chatBox} className="bg-gray-300/80 overflow-y-scroll w-full h-full" onChange={scrollToBottom}>
-        <p>Welcome to the Sand Casino!</p>
+      <div 
+        ref={chatBox}
+        className="bg-gray-300/80 overflow-y-scroll w-full h-full"
+      >
+        {messages.map((message, index) => (
+            <p key={index}>{message}</p>
+          ))
+        }
       </div>
 
       <form id="chat-form" action="" className="relative bg-yellow-100 w-full inline-flex rounded-sm">

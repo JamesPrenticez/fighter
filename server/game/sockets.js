@@ -1,17 +1,12 @@
-// Game
+const color = require("colors")
+
 require("./auth.js")
 const Player = require('./player.js')
 const Bullet = require('./bullet.js')
 
 let SOCKET_LIST = {}
 
-module.exports = {
-    listen,
-    update
-}
-
 // ---------- Player ---------- 
-
 Player.list = {}
 
 Player.onConnect = (socket) => {
@@ -76,7 +71,7 @@ Bullet.update = () => {
 function listen(io){
     io.sockets.on("connection", (socket) => {
         socket.id = Math.random();
-        console.log("Socket connected " + socket.id);
+        console.log(`Socket connected: ${(socket.id)} ` .cyan)
         SOCKET_LIST[socket.id] = socket;
         
         socket.on("login", (data) => {
@@ -142,4 +137,9 @@ function update(){
         }
 
     }, 1000/25) //25 times per second FPS?
+}
+
+module.exports = {
+    listen,
+    update
 }

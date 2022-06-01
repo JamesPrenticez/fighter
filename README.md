@@ -33,3 +33,11 @@ react react-dom react-router-dom
 style-loader tailwindcss postcss-loader postcss css-loader autoprefixer @babel/preset-react
 
 @babel/core 
+
+# React sockets on the client side
+[react chat](https://www.section.io/engineering-education/creating-a-real-time-chat-app-with-react-socket-io-with-e2e-encryption/)
+
+https://dev.to/bravemaster619/how-to-prevent-multiple-socket-connections-and-events-in-react-531d
+
+### Colors for the terminal becasue swag is important
+[colors](https://www.npmjs.com/package/colors)

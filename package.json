@@ -21,6 +21,8 @@
   "dependencies": {
     "@babel/preset-react": "^7.17.12",
     "autoprefixer": "^10.4.7",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
     "css-loader": "^6.7.1",
     "express": "^4.17.1",
     "jest": "^28.1.0",

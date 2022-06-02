@@ -29,13 +29,22 @@ app.use('/', router)
 // ------ Handel cross origin requests
 app.use(cors())
 
+// Client catch all to handle page reload
+app.get('*', function(req, res) {
+  res.sendFile(path.resolve(__dirname, './public', 'index.html'));
+})
+
 // ------ Sockets
-const sockets = require("./game/sockets.js")
-sockets.listen(io)
-sockets.update()
+// const sockets = require("./game/sockets.js")
+// sockets.listen(io)
+// sockets.update()
 
 // Test
 // import {testActions} from "./game/testActions.js"
 // testActions()
+
+//Chat
+const sockets = require("./chat/sockets.js")
+sockets.listen(io)
 
 module.exports = server

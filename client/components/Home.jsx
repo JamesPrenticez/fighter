@@ -67,7 +67,6 @@ export default function Home() {
             </canvas>
 
             <Chat />
-
             
           </div>
         </main>

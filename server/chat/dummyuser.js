@@ -5,12 +5,10 @@ function addUserToRoom(id, username, room) {
   const user = { id, username, room }
 
   usersList.push(user);
-  console.log(usersList, "users")
+  console.log("userList", usersList)
 
   return user
 }
-
-console.log("userList", usersList)
 
 // gets user by id
 function getUserById(id) {

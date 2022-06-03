@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Layout from './Layout'
-import Chat from './Chat'
 
 export default function Home() {
   return (
@@ -65,8 +64,6 @@ export default function Home() {
               className="border-2 border-gray-600 select-none box-border hidden"
             >
             </canvas>
-
-            <Chat />
             
           </div>
         </main>

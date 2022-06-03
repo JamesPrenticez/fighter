@@ -8,3 +8,9 @@
     overflow-y-scroll
   }
 }
+
+@layer components {
+  .no-scrollbar-x::-webkit-scrollbar{
+    display: none;
+  }
+}

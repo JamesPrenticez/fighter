@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Layout({children}) {
   return (
-  <div className='flex justify-center'>
+  <div className='flex justify-center min-w-[445px] p-6'>
     <div className='w-full max-w-7xl'>
     <header>
       <nav className='border-b-2'>

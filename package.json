@@ -20,10 +20,10 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.17.12",
-    "aes256": "^1.1.0",
     "autoprefixer": "^10.4.7",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
     "css-loader": "^6.7.1",
     "express": "^4.17.1",
     "jest": "^28.1.0",

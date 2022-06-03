@@ -5,7 +5,7 @@ function addUserToRoom(id, username, room) {
   const user = { id, username, room }
 
   usersList.push(user);
-  console.log("userList", usersList)
+  console.log("user has been added to room", usersList)
 
   return user
 }

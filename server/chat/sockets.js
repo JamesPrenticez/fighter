@@ -10,9 +10,9 @@ function listen(io){
       socket.join(user.room);
 
       //display a welcome message to the user who joined a room
-      socket.emit("welcomeMessage", {
-        userId: user.id,
-        username: user.username,
+      socket.emit("message", {
+        userId: "007",
+        username: "admin",
         text: `Welcome ${user.username}`,
       })
 

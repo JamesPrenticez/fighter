@@ -17,7 +17,6 @@ function ChatRoomList({socket}) {
       alert("please enter a username")
       return
     }
-    console.log("here")
     socket.emit("joinRoom", {username, roomname})
     navigate(`/chat/${roomname}/${username}`)
   }

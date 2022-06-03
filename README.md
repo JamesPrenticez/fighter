@@ -45,4 +45,5 @@ https://dev.to/bravemaster619/how-to-prevent-multiple-socket-connections-and-eve
 ### Redux & React-Redux
 - to handle encrypting/decyrpting chat messages
 
-### Hash function - aes256 - Advanced Encryption Standard
+### Hash function - Advanced Encryption Standard
+[CryptoJS](https://www.npmjs.com/package/crypto-js) 

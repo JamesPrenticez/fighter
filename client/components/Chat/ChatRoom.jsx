@@ -13,10 +13,7 @@ function ChatRoom({ socket }) {
   const bottomOfChatBox = useRef(null);
   
   const [text, setText] = useState("")
-  const [messages, setMessages] = useState([
-    {userId: "5a4sdf65a4ds", username: "test", text: "the quick brown dog jumps over the slow black cat"},
-    {userId: "asdfasda4sdf65a4ds", username: "prenticez", text: "oh wow that's cool"}
-  ])
+  const [messages, setMessages] = useState([])
 
   const roomname = params.roomname
   const username = params.username
@@ -30,7 +27,6 @@ function ChatRoom({ socket }) {
       // decrypt messages recieved
       const answer = decrypt(data.text, data.username)
       dispatchProcess(false, answer, data.text)
-      console.log('answer', answer)
       let temp = messages
       temp.push({
         userId: data.userId,
@@ -39,25 +35,16 @@ function ChatRoom({ socket }) {
       })
       setMessages([...temp])
     })
+    console.log(socket)
   }, [socket])
 
   const sendData = () => {
     if(text == "") return
     // encrypt messages sent
-    const answer = encrypt(text)
-    socket.emit("chat", answer)
+    const cypher = encrypt(text)
+    socket.emit("sendMessage", cypher)
     setText("")
   }
-
-  // Scroll chat box to bottom
-  
-  //scroll ChatBox to bottom
-  // function scrollToBottom() {
-  //   chatBox.current.scrollTo({top: chatBox.current.scrollHeight})
-  // }
-  
-  // useEffect(scrollToBottom, [messages])
-
 
   const scrollToBottom = () => {
     bottomOfChatBox.current.scrollIntoView({ behavior: "smooth" })
@@ -67,7 +54,7 @@ function ChatRoom({ socket }) {
 
   return (
     <Layout>
-      <div className='bg-gray-50 h-full w-full'>
+      <div className='bg-gray-50 h-full w-full md:w-1/2'>
         {/* Header */}
         <div>
           <h1 className='text-3xl font-bold'>Room: {roomname}</h1>
@@ -105,7 +92,7 @@ function ChatRoom({ socket }) {
         {/* Input Message*/}
         <div className='flex mt-2 space-x-2'>
           <span
-            className="bg-white text-blue-700 flex w-full p-2 ring-1 ring-blue-900 focus:ring-blue-500 outline-none rounded-sm"
+            className="bg-white text-blue-700 flex w-full p-2 ring-1 ring-blue-900 focus:ring-blue-500 outline-none rounded-sm whitespace-nowrap truncate"
             >
             {username}: &nbsp;
             <input 

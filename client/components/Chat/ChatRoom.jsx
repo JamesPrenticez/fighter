@@ -24,6 +24,7 @@ function ChatRoom({ socket }) {
   
   useEffect(() => {
     socket.on("message", (data) => {
+      console.log(data)
       // decrypt messages recieved
       const answer = decrypt(data.text, data.username)
       dispatchProcess(false, answer, data.text)
@@ -32,10 +33,10 @@ function ChatRoom({ socket }) {
         userId: data.userId,
         username: data.username,
         text: answer,
+        color: data.color
       })
       setMessages([...temp])
     })
-    console.log(socket)
   }, [socket])
 
   const sendData = () => {
@@ -80,8 +81,8 @@ function ChatRoom({ socket }) {
             } else {
               return (
                 <div key={index} className="flex space-x-4">
-                  <span className='min-w-[4rem] w-full max-w-[4rem]'>{message.username}:</span>
-                  <p className='whitespace-nowrap text-clip overflow-x-scroll no-scrollbar-x' >{message.text}</p>
+                  <span className='min-w-[4rem] w-full max-w-[4rem]' style={{color: message.color}}>{message.username}:</span>
+                  <p className="whitespace-nowrap text-clip overflow-x-scroll no-scrollbar-x" style={{color: message.color}}>{message.text}</p>
                 </div>
               )
             }

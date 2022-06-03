@@ -14,13 +14,15 @@ function listen(io){
         userId: "007",
         username: "admin",
         text: `Welcome ${user.username}`,
+        color: "red"
       })
 
       // display a joined room message to all other room users except that particular user
       socket.broadcast.to(user.room).emit("message", {
-        userId: user.id,
-        username: user.username,
+        userId: "007",
+        username: "admin",
         text: `${user.username} has joined the chat`,
+        color: "red"
       })
     })
 

@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Socket } from "socket.io-client"
 import Layout from "../Layout"
 
 const rooms = [
@@ -11,7 +10,7 @@ const rooms = [
 
 function ChatRoomList({socket}) {
   const navigate = useNavigate();
-  const [username, setusername] = useState("")
+  const [username, setusername] = useState("prenticez")
 
   const sendData = (roomname) => {
     if(!username) {

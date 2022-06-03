@@ -1,6 +1,12 @@
-import * as db from "../database.js"
+const db = require("../database.js")
 
-export const isValidPassword = (data,cb) => {
+module.exports = {
+  isValidPassword,
+  isUsernameTaken,
+  addUser
+}
+
+function isValidPassword(data, cb){
 	db.getUsernameAndPassword({username: data.username, password: data.password})
     .then((res) => {
       if(res.length > 0)
@@ -10,7 +16,7 @@ export const isValidPassword = (data,cb) => {
     })
 }
 
-export const isUsernameTaken = (data,cb) => {
+function isUsernameTaken(data, cb){
 	db.getUsername({username: data.username})
     .then((res) => {
       if(res.length > 0)
@@ -20,7 +26,7 @@ export const isUsernameTaken = (data,cb) => {
     })
 }
 
-export const addUser = (data, cb) => {
+function addUser(data, cb){
   db.addUser({username: data.username, password: data.password})
   .then((res) => {
     cb()

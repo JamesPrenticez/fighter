@@ -1,14 +1,77 @@
-// Game
-import * as auth from "./auth.js"
-import Player from "./player.js"
-import Bullet from "./bullets.js"
+const color = require("colors")
+
+require("./auth.js")
+const Player = require('./player.js')
+const Bullet = require('./bullet.js')
 
 let SOCKET_LIST = {}
 
-export function listen(io){
+// ---------- Player ---------- 
+Player.list = {}
+
+Player.onConnect = (socket) => {
+    let numberOfPlayers =  Object.keys(Player.list).length + 1
+    let player = new Player(socket.id, numberOfPlayers)
+    Player.list[socket.id] = player
+    console.log("There are " + Object.keys(Player.list).length + " players online")
+
+    socket.on("keyPress", function(data){
+        if(data.inputId === "up") player.pressingUp = data.state;
+        else if(data.inputId === "down") player.pressingDown = data.state;
+        else if(data.inputId === "right") player.pressingRight = data.state;
+        else if(data.inputId === "left") player.pressingLeft = data.state;
+        else if(data.inputId === "attack") player.pressingAttack = data.state;
+        else if(data.inputId === "clientX") player.clientX = data.state;
+        else if(data.inputId === "clientY") player.clientY = data.state;
+    })
+}
+
+Player.onDisconnect = (socket, SOCKET_LIST) => {
+    console.log("Socket disconnected " + socket.id)
+    delete Player.list[socket.id]
+    console.log("There are " + Object.keys(Player.list).length + " players online")
+}
+
+Player.update = () => {
+    let pack = [];
+    for(let i in Player.list){
+        let player = Player.list[i]
+        player.update()
+        pack.push({
+            x: player.x,
+            y: player.y,
+            number: player.number
+        })
+    }
+    return pack;
+}
+
+// ---------- Bullet ---------- 
+
+Bullet.list = {}
+
+Bullet.update = () => {
+  let pack = [];
+  for(let i in Bullet.list){
+      let bullet = Bullet.list[i]
+      //console.log(Bullet.list[i])
+      bullet.update()
+      if(bullet.remove === true) delete Bullet.list[i]
+      pack.push({
+          x: bullet.x,
+          y: bullet.y,
+          color: bullet.color
+      })
+  }
+  return pack;
+}
+
+// ---------- Main ---------- 
+
+function listen(io){
     io.sockets.on("connection", (socket) => {
         socket.id = Math.random();
-        console.log("Socket connected " + socket.id);
+        console.log(`Socket connected: ${(socket.id)} ` .cyan)
         SOCKET_LIST[socket.id] = socket;
         
         socket.on("login", (data) => {
@@ -61,7 +124,7 @@ export function listen(io){
 }
 
 // For every player connected loop through SOCKETLIST and update there position
-export function update(){
+function update(){
     setInterval(function(){
         let pack = {
             player: Player.update(),   
@@ -74,4 +137,9 @@ export function update(){
         }
 
     }, 1000/25) //25 times per second FPS?
+}
+
+module.exports = {
+    listen,
+    update
 }

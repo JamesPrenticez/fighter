@@ -7,6 +7,8 @@ OR
 https://scripterswar.com/tutorial/nodejs
 https://www.youtube.com/watch?v=GVuU25pGaYo&t=499s
 
+Episode 9: MongoDB Database - 10.54
+
 File communication (Express)
     Client asks server for a file (eg: playerImg.png)
 
@@ -25,3 +27,23 @@ NOTES:
 - npx knex migrate:make users
 - npx knex migrate:latest
 - npx knex seed:run
+
+react react-dom react-router-dom
+
+style-loader tailwindcss postcss-loader postcss css-loader autoprefixer @babel/preset-react
+
+@babel/core 
+
+# React sockets on the client side
+[react chat](https://www.section.io/engineering-education/creating-a-real-time-chat-app-with-react-socket-io-with-e2e-encryption/)
+
+https://dev.to/bravemaster619/how-to-prevent-multiple-socket-connections-and-events-in-react-531d
+
+### Colors for the terminal becasue swag is important
+[colors](https://www.npmjs.com/package/colors)
+
+### Redux & React-Redux
+- to handle encrypting/decyrpting chat messages
+
+### Hash function - Advanced Encryption Standard
+[CryptoJS](https://www.npmjs.com/package/crypto-js) 

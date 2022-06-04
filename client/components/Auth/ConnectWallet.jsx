@@ -1,8 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import Layout from '../Layout'
+import CreateAccount from './CreateAccount'
 
-function ConnectWallet() {
+function ConnectWallet({socket}) {
   const [currentAccount, setCurrentAccount] = useState(null)
+
+
+  const username = false //need to pull this trhoguh
 
   useEffect(() => {
     checkIfWalletIsConnected()
@@ -96,15 +100,11 @@ function ConnectWallet() {
         </>
       );
     } 
-    /* Scenario #2 - If user has connected */
-    else if (currentAccount) {
+    /* Scenario #2 - If user has connected but does not have a username*/
+    else if (currentAccount && username == false) {
       return (
         <>
-          <h1>
-            Your account address is:
-            {currentAccount}
-   
-          </h1>
+          <CreateAccount socket={socket} walletAddress={currentAccount}/>
         </>
       )
     }

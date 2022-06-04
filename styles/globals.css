@@ -14,4 +14,20 @@
   .no-scrollbar-x::-webkit-scrollbar{
     display: none;
   }
+
+  .inputField {
+    @apply
+    bg-white
+    flex
+    w-full
+    p-2
+    ring-1
+    ring-orange-700
+    focus:ring-orange-600
+    outline-none
+    rounded-sm
+    whitespace-nowrap
+    truncate
+  }
+
 }

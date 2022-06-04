@@ -102,7 +102,7 @@ function ChatRoom({ socket }) {
               placeholder='Enter your message...'
               value={text}
               onChange={(e) => setText(e.target.value)}
-              onKeyPress={(e) => {if(e.key === "Enter"){ sendData()}}}
+              onKeyPress={(e) => {if(e.key === "Enter"){sendData()}}}
             />            
           </span>
           <button 

@@ -17,8 +17,8 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           {/* <Route exact path="/" element={<Home/>} /> */}
-          <Route exact path="/" element={<ConnectWallet/>} />
-          <Route exact path="/ChatRoomList" element={<ChatRoomList socket={socket}/>} />
+          <Route exact path="/" element={<ConnectWallet socket={socket}/>} />
+          <Route exact path="/chat-room-list" element={<ChatRoomList socket={socket}/>} />
           <Route exact path="/chat/:roomname/:username" element={<ChatRoom socket={socket}/>} />
         </Routes>
       </BrowserRouter>

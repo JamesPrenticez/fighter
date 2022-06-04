@@ -1,15 +1,15 @@
-const { isUsernameTaken } = require("./auth.js")
+const { isUsernameTaken, createNewAccount, getWallet } = require("./auth.js")
 
 function listen(io){
   io.on("connect", (socket) => {
-    socket.on("register", (data) => {
+    socket.on("createNewAccount", (data) => {
       isUsernameTaken(data, function(res){
           if(res){
-              socket.emit('registrationResponse', {success: false})		
+            socket.emit('createNewAccountResponse', {success: false})		
           } else {
-              auth.addUser(data,function(){
-                  socket.emit('registrationResponse', {success: true})				
-              })
+            createNewAccount(data, function(){
+                socket.emit('createNewAccountResponse', {success: true})				
+            })
           }
       })		
     })
@@ -19,6 +19,16 @@ function listen(io){
               socket.emit('isUsernameTakenResponse', {success: true})		
             } else {
               socket.emit('isUsernameTakenResponse', {success: false})				
+          }
+      })		
+    })
+    socket.on("getWallet", (data) => {
+      getWallet(data, function(res){
+        console.log("get wallet", res)
+          if(res){
+              socket.emit('getWalletResponse', {success: true, username: res.username})		
+            } else {
+              socket.emit('getWalletResponse', {success: false})				
           }
       })		
     })

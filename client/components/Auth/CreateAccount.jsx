@@ -6,6 +6,13 @@ function CreateAccount({socket, walletAddress}){
   const [username, setUsername] = useState("")
   const [loading, setLoading] = useState(false)
   const [usernameTaken, setUsernameTaken] = useState(null)
+  const [accountCreated, setAccountCreated] = useState(false)
+
+
+  const getWallet = () => {
+    socket.emit("getWallet", {wallet: walletAddress})
+
+  }
   
   const isUsernameTaken = (username) => {
     if(!username) return setUsernameTaken(true)
@@ -16,8 +23,13 @@ function CreateAccount({socket, walletAddress}){
   
   const register = (e) => {
     e.preventDefault()
-    socket.emit("register", {username: username})
+    socket.emit("createNewAccount", {wallet: walletAddress, username: username})
   }
+
+  //Listen for getWallet response
+  socket.on('getWalletResponse', (data) => {
+    console.log("wallet", data)
+  })
 
   //Listen for isUsernameTaken response
   socket.on('isUsernameTakenResponse', (data) => {
@@ -28,14 +40,13 @@ function CreateAccount({socket, walletAddress}){
     setUsernameTaken(data.success)
   })
 
-
-  //Listen for registration response
-  socket.on('registrationResponse', (data) => {
-    let temp = log
+  //Listen for createNewAccount response
+  socket.on('createNewAccountResponse', (data) => {
+    console.log(data.success)
     if(data.success){
-      setLog([...temp], "Account created!")
+      setAccountCreated(true)
     } else {
-      setLog([...temp], "Username already taken")
+      setAccountCreated(false)
     }
   })
   
@@ -80,7 +91,17 @@ function CreateAccount({socket, walletAddress}){
         </button>
       </div>
 
+              {/* Move this logic  up the tree*/}
+      <button 
+          className="text-white mt-4 w-1/4 p-1 bg-blue-700"
+          onClick={getWallet}
+      >
+        getWallet
+      </button>
       
+
+      <h1>Account </h1>
+      <h2>{accountCreated ? "true" : "false"}</h2>
 
 
     </div>

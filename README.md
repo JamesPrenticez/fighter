@@ -47,3 +47,11 @@ https://dev.to/bravemaster619/how-to-prevent-multiple-socket-connections-and-eve
 
 ### Hash function - Advanced Encryption Standard
 [CryptoJS](https://www.npmjs.com/package/crypto-js) 
+
+## JWT 
+(metamask with jtw)[https://www.toptal.com/ethereum/one-click-login-flows-a-metamask-tutorial]
+
+## Display NFT assets wiht Rarible API
+https://www.youtube.com/watch?v=gJG6x8jUeRg
+
+C:\Users\prent\github\multiplayer_fighter_game

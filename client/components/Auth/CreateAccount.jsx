@@ -2,15 +2,15 @@ import React, {useEffect, useState} from 'react'
 import Spinner from '../Common/Spinner'
 import {TickIcon, CrossIcon} from '../Common/Icons'
 
-function CreateAccount({socket, walletAddress}){
+function CreateAccount({socket, publicAddress}){
   const [username, setUsername] = useState("")
   const [loading, setLoading] = useState(false)
   const [usernameTaken, setUsernameTaken] = useState(null)
   const [accountCreated, setAccountCreated] = useState(false)
 
 
-  const getWallet = () => {
-    socket.emit("getWallet", {wallet: walletAddress})
+  const getPublicAddress = () => {
+    socket.emit("getPublicAddress", {publicAddress: publicAddress})
 
   }
   
@@ -23,12 +23,12 @@ function CreateAccount({socket, walletAddress}){
   
   const register = (e) => {
     e.preventDefault()
-    socket.emit("createNewAccount", {wallet: walletAddress, username: username})
+    socket.emit("createNewAccount", {publicAddress: publicAddress, username: username})
   }
 
-  //Listen for getWallet response
-  socket.on('getWalletResponse', (data) => {
-    console.log("wallet", data)
+  //Listen for get public address response
+  socket.on('getPublicAddressResponse', (data) => {
+    console.log("Public Address", data)
   })
 
   //Listen for isUsernameTaken response
@@ -59,8 +59,8 @@ function CreateAccount({socket, walletAddress}){
 
         <h1 className='text-2xl font-bold'>Create Account</h1>
 
-        <h2 className='text-lg w-1/2 font-medium'>Wallet address: </h2>
-        <p>{walletAddress}</p>
+        <h2 className='text-lg w-1/2 font-medium'>Public Address: </h2>
+        <p>{publicAddress}</p>
 
         <div className='flex mt-2 space-x-2 w-full'>
               <input 
@@ -94,9 +94,9 @@ function CreateAccount({socket, walletAddress}){
               {/* Move this logic  up the tree*/}
       <button 
           className="text-white mt-4 w-1/4 p-1 bg-blue-700"
-          onClick={getWallet}
+          onClick={getPublicAddress}
       >
-        getWallet
+        getPublicAddress
       </button>
       
 

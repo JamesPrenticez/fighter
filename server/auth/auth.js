@@ -1,13 +1,13 @@
 const db = require("../database.js")
 
 module.exports = {
-  getWallet,
+  getpublicAddress,
   isUsernameTaken,
   createNewAccount
 }
 
-function getWallet(data, cb){
-	db.getWallet({wallet: data.wallet})
+function getpublicAddress(data, cb){
+	db.getpublicAddress({publicAddress: data.publicAddress})
     .then((res) => {
       if(res.username)
         cb({success: true, username: res.username})
@@ -28,7 +28,7 @@ function isUsernameTaken(data, cb){
 
 function createNewAccount(data, cb){
   db.createNewAccount({
-    wallet: data.wallet,
+    publicAddress: data.publicAddress,
     username: data.username
   })
   .then((res) => {

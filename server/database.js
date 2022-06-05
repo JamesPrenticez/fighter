@@ -5,7 +5,7 @@ const database = require('knex')(config)
 module.exports = {
   getUsers,
   getUsernameAndPassword,
-  getWallet,
+  getPublicAddress,
   getUsername,
   createNewAccount,
   updateProgress
@@ -19,16 +19,16 @@ function getUsernameAndPassword({username, password}, db = database) {
   return db("users").where({username, password})
 }
 
-function getWallet({wallet}, db = database) {
-  return db("users").where({wallet}).first()
+function getPublicAddress({publicAddress}, db = database) {
+  return db("users").where({publicAddress}).first()
 }
 
 function getUsername({username}, db = database) {
   return db("users").where({username})
 }
 
-function createNewAccount({wallet, username}, db = database){
-  return db("users").insert({wallet, username})
+function createNewAccount({publicAddress, username}, db = database){
+  return db("users").insert({publicAddress, username})
 }
 
 function updateProgress({id, progress}, db = database){

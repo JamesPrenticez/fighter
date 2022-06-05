@@ -65,18 +65,11 @@ function ConnectWallet({socket}) {
       }
 
       // Fancy method to request access to account
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      })
+      const accounts = await ethereum.request({ method: "eth_requestAccounts" })
 
       //Print connect wallets public address once they have authorized Metamask for our website
       console.log("connected", accounts[0])
-
-      // Set State to current account
       setCurrentAccount(accounts[0])
-
-      // Setup Event Listener
-      // setupEventListener()
 
     } catch (error) {
       console.log(error)
@@ -104,7 +97,7 @@ function ConnectWallet({socket}) {
     else if (currentAccount && username == false) {
       return (
         <>
-          <CreateAccount socket={socket} walletAddress={currentAccount}/>
+          <CreateAccount socket={socket} publicAddress={currentAccount}/>
         </>
       )
     }

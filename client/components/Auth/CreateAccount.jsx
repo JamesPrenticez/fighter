@@ -11,7 +11,6 @@ function CreateAccount({socket, publicAddress}){
 
   const getPublicAddress = () => {
     socket.emit("getPublicAddress", {publicAddress: publicAddress})
-
   }
   
   const isUsernameTaken = (username) => {
@@ -27,7 +26,7 @@ function CreateAccount({socket, publicAddress}){
   }
 
   //Listen for get public address response
-  socket.on('getPublicAddressResponse', (data) => {
+  socket.on('publicAddressResponse', (data) => {
     console.log("Public Address", data)
   })
 

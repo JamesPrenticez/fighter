@@ -1,16 +1,16 @@
 const db = require("../database.js")
 
 module.exports = {
-  getpublicAddress,
+  getPublicAddress,
   isUsernameTaken,
   createNewAccount
 }
 
-function getpublicAddress(data, cb){
-	db.getpublicAddress({publicAddress: data.publicAddress})
+function getPublicAddress(data, cb){
+	db.getPublicAddress({publicAddress: data.publicAddress})
     .then((res) => {
       if(res.username)
-        cb({success: true, username: res.username})
+        cb({success: true, username: res.username, nonce: res.nonce})
       else
         cb(false)
   })

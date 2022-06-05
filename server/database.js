@@ -28,7 +28,8 @@ function getUsername({username}, db = database) {
 }
 
 function createNewAccount({publicAddress, username}, db = database){
-  return db("users").insert({publicAddress, username})
+  let nonce = Math.floor(Math.random() * 1000000)
+  return db("users").insert({publicAddress, nonce, username})
 }
 
 function updateProgress({id, progress}, db = database){

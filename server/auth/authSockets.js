@@ -1,4 +1,4 @@
-const { isUsernameTaken, createNewAccount, getpublicAddress } = require("./auth.js")
+const { isUsernameTaken, createNewAccount, getPublicAddress } = require("./auth.js")
 
 function listen(io){
   io.on("connect", (socket) => {
@@ -22,13 +22,12 @@ function listen(io){
           }
       })		
     })
-    socket.on("publicAddress", (data) => {
-      getpublicAddress(data, function(res){
-        console.log("get public address", res)
+    socket.on("getPublicAddress", (data) => {
+      getPublicAddress(data, function(res){
           if(res){
-              socket.emit('getPublicAddressResponse', {success: true, username: res.username})		
+              socket.emit('publicAddressResponse', {success: true, username: res.username, nonce: res.nonce})		
             } else {
-              socket.emit('getPublicAddressResponse', {success: false})				
+              socket.emit('publicAddressResponse', {success: false})				
           }
       })		
     })

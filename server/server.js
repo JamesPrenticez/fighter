@@ -44,7 +44,11 @@ app.get('*', function(req, res) {
 // testActions()
 
 //Chat
-const sockets = require("./chat/sockets.js")
-sockets.listen(io)
+const chat = require("./chat/chatSockets.js")
+chat.listen(io)
+
+//Auth
+const auth = require("./auth/authSockets.js")
+auth.listen(io)
 
 module.exports = server

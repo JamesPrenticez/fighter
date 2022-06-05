@@ -9,15 +9,15 @@ module.exports = {
 function getPublicAddress(data, cb){
 	db.getPublicAddress({publicAddress: data.publicAddress})
     .then((res) => {
-      if(res.username)
-        cb({success: true, username: res.username, nonce: res.nonce})
+      if(res != undefined)
+        cb({success: true, publicAddress: res.publicAddress, username: res.username, nonce: res.nonce})
       else
-        cb(false)
+        cb({success: false})
   })
 }
 
 function isUsernameTaken(data, cb){
-	db.getUsername({username: data.username})
+	db.getUsername({username: data.username.toLowerCase()})
     .then((res) => {
       if(res.length > 0)
         cb(true)

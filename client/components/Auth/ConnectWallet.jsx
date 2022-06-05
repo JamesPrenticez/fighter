@@ -1,17 +1,21 @@
 import React, {useState, useEffect} from 'react'
 import Layout from '../Layout'
 import CreateAccount from './CreateAccount'
+import Account from './Account'
 
 function ConnectWallet({socket}) {
-  const [currentAccount, setCurrentAccount] = useState(null)
-
-
-  const username = false //need to pull this trhoguh
+  const [publicAddress, setPublicAddress] = useState(null)
+  const [currentAccount, setCurrentAccount] = useState({})
 
   useEffect(() => {
     checkIfWalletIsConnected()
     checkNetwork()
   }, [])
+
+  useEffect(() => {
+    if(!publicAddress) return
+    checkIfPublicAddressIsStoredInDatabase(publicAddress)
+  }, [publicAddress])
 
   //Check we have access to the ethereum.window object
   const checkIfWalletIsConnected = async () => {
@@ -31,7 +35,7 @@ function ConnectWallet({socket}) {
         if (accounts.length !== 0) {
           const account = accounts[0]
           console.log("Found an authorized account:", account)
-          setCurrentAccount(account)
+          setPublicAddress(account)
         } else {
           console.log("No authorized account found")
         }
@@ -69,35 +73,53 @@ function ConnectWallet({socket}) {
 
       //Print connect wallets public address once they have authorized Metamask for our website
       console.log("connected", accounts[0])
-      setCurrentAccount(accounts[0])
+      setPublicAddress(accounts[0])
 
     } catch (error) {
       console.log(error)
     }
   }
 
-  /* Check if user already has a NFT minted? - Would go here */
+  // Check publicAddress is stored in the DB
+  const checkIfPublicAddressIsStoredInDatabase = () => {
+    socket.emit("getPublicAddress", {publicAddress: publicAddress})
+  }
+
+  //Listen for get public address response
+  socket.on('publicAddressResponse', (data) => {
+    console.log("Public Address", data)
+    setCurrentAccount(data)
+  })
+  
 
   //Decide what to render!
   const renderContent = () => {
-    /* Scenario #1 - If user has has not connected to your app - Show Connect To Wallet Button*/
-    if (!currentAccount) {
+    /* Scenario #1 - No wallet connected*/
+    if (!publicAddress) {
       return (
-        <>
+        <div className='flex justify-center'>
           <button
             onClick={connectWallet}
-            className="mt-4 w-2/6 p-4 bg-gradient-to-r from-yellow-400 to-red-600 text-2xl font-bold rounded transform transition-all hover:scale-105 duration-500 ease-out"
+            className="text-white mt-4 w-2/6 p-4 bg-gradient-to-r from-yellow-400 to-red-600 text-2xl font-bold rounded transform transition-all hover:scale-105 ease-in-out"
           >
-            Connect Wallet!
+            Connect MetaMask!
           </button>
-        </>
-      );
+        </div>
+      )
     } 
-    /* Scenario #2 - If user has connected but does not have a username*/
-    else if (currentAccount && username == false) {
+    /* Scenario #2 - Wallet connect but no info stored in the database*/
+    else if (publicAddress && !currentAccount.success) {
       return (
         <>
-          <CreateAccount socket={socket} publicAddress={currentAccount}/>
+          <CreateAccount socket={socket} publicAddress={publicAddress} currentAccount={currentAccount} setCurrentAccount={setCurrentAccount} checkIfPublicAddressIsStoredInDatabase={checkIfPublicAddressIsStoredInDatabase}/>
+        </>
+      )
+    }
+    /* Scenario #3 - Everything is avaliable - show account settings page*/
+    else if (publicAddress && currentAccount.success) {
+      return (
+        <>
+          <Account socket={socket} currentAccount={currentAccount}/>
         </>
       )
     }

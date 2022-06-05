@@ -2,17 +2,11 @@ import React, {useEffect, useState} from 'react'
 import Spinner from '../Common/Spinner'
 import {TickIcon, CrossIcon} from '../Common/Icons'
 
-function CreateAccount({socket, publicAddress}){
+function CreateAccount({socket, publicAddress, checkIfPublicAddressIsStoredInDatabase, currentAccount, setCurrentAccount}){
   const [username, setUsername] = useState("")
   const [loading, setLoading] = useState(false)
   const [usernameTaken, setUsernameTaken] = useState(null)
-  const [accountCreated, setAccountCreated] = useState(false)
 
-
-  const getPublicAddress = () => {
-    socket.emit("getPublicAddress", {publicAddress: publicAddress})
-  }
-  
   const isUsernameTaken = (username) => {
     if(!username) return setUsernameTaken(true)
     setLoading(true)
@@ -25,10 +19,6 @@ function CreateAccount({socket, publicAddress}){
     socket.emit("createNewAccount", {publicAddress: publicAddress, username: username})
   }
 
-  //Listen for get public address response
-  socket.on('publicAddressResponse', (data) => {
-    console.log("Public Address", data)
-  })
 
   //Listen for isUsernameTaken response
   socket.on('isUsernameTakenResponse', (data) => {
@@ -43,9 +33,9 @@ function CreateAccount({socket, publicAddress}){
   socket.on('createNewAccountResponse', (data) => {
     console.log(data.success)
     if(data.success){
-      setAccountCreated(true)
+      checkIfPublicAddressIsStoredInDatabase(publicAddress)
     } else {
-      setAccountCreated(false)
+      setCurrentAccount({success: false})
     }
   })
   
@@ -90,18 +80,9 @@ function CreateAccount({socket, publicAddress}){
         </button>
       </div>
 
-              {/* Move this logic  up the tree*/}
-      <button 
-          className="text-white mt-4 w-1/4 p-1 bg-blue-700"
-          onClick={getPublicAddress}
-      >
-        getPublicAddress
-      </button>
-      
 
-      <h1>Account </h1>
-      <h2>{accountCreated ? "true" : "false"}</h2>
-
+      <h1>Account Created?</h1>
+      { currentAccount.success == true ? <TickIcon className="h-6 w-6 text-green-500"/> : <CrossIcon className="h-6 w-6 text-red-500" />} 
 
     </div>
   )

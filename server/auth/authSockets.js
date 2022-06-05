@@ -24,8 +24,8 @@ function listen(io){
     })
     socket.on("getPublicAddress", (data) => {
       getPublicAddress(data, function(res){
-          if(res){
-              socket.emit('publicAddressResponse', {success: true, username: res.username, nonce: res.nonce})		
+          if(res.success){
+              socket.emit('publicAddressResponse', {success: true, publicAddress: res.publicAddress, username: res.username, nonce: res.nonce})		
             } else {
               socket.emit('publicAddressResponse', {success: false})				
           }

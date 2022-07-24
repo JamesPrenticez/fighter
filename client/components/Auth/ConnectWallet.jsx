@@ -90,6 +90,10 @@ function ConnectWallet({socket}) {
     console.log("Public Address", data)
     setCurrentAccount(data)
   })
+
+  const signAuthToken = () => {
+    
+  }
   
 
   //Decide what to render!

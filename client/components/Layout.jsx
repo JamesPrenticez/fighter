@@ -20,10 +20,16 @@ function Layout({children}) {
             <Link to="/">Home</Link>
           </p>
           <p className='border-b-4 border-transparent hover:border-white'>
-            <Link to="/">Link 1</Link>
+            <Link to="/login">Login</Link>
           </p>
           <p className='border-b-4 border-transparent hover:border-white'>
-            <Link to="/">Link 2</Link>
+            <Link to="/game">Game</Link>
+          </p>
+          <p className='border-b-4 border-transparent hover:border-white'>
+            <Link to="/char">Char</Link>
+          </p>
+          <p className='border-b-4 border-transparent hover:border-white'>
+            <Link to="/chat-room-list">Chat Room</Link>
           </p>
         </div>
       </nav>

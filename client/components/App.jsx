@@ -9,6 +9,9 @@ import ConnectWallet from './Auth/ConnectWallet'
 import ChatRoom from './Chat/ChatRoom';
 import ChatRoomList from './Chat/ChatRoomList';
 
+import Game from './Game/Game';
+import GenerateCharacter from './Game/GenerateCharacter';
+
 export default function App() {
   const socket = io.connect('/')
 
@@ -20,6 +23,7 @@ export default function App() {
           <Route exact path="/" element={<ConnectWallet socket={socket}/>} />
           <Route exact path="/chat-room-list" element={<ChatRoomList socket={socket}/>} />
           <Route exact path="/chat/:roomname/:username" element={<ChatRoom socket={socket}/>} />
+          <Route exact path="/char" element={<GenerateCharacter />} />
         </Routes>
       </BrowserRouter>
     </>

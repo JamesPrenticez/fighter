@@ -52,6 +52,7 @@ https://dev.to/bravemaster619/how-to-prevent-multiple-socket-connections-and-eve
 (metamask with jtw)[https://www.toptal.com/ethereum/one-click-login-flows-a-metamask-tutorial]
 ## Singing
 https://codesandbox.io/s/react-eth-metamask-signatures-ibuxj?file=/src/SignMessage.js
+https://github.com/bytesbay/web3-token
 
 ## Display NFT assets wiht Rarible API
 https://www.youtube.com/watch?v=gJG6x8jUeRg

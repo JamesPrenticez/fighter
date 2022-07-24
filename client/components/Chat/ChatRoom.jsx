@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux"
 import { process } from "../../redux/encrypt/actions"
-import {encrypt, decrypt} from "../../utlis/aes256"
+import {encrypt, decrypt} from "../../utils/aes256"
 import Layout from '../Layout';
 
 function ChatRoom({ socket }) {

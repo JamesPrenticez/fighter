@@ -42,3 +42,16 @@ router.patch("/api/user/:id", (req, res) => {
       res.status(500).send(err)
   })
 })
+
+router.post("/api/user/:id/character_creation", (req, res) => {
+  
+  let { seed } = req.body
+
+  db.updateProgress(id, progress)
+    .then(() => {
+      res.status(201)
+    })
+    .catch(err => {
+      res.status(500).send(err)
+  })
+})

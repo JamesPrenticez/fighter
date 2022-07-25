@@ -10,7 +10,7 @@ import ChatRoom from './Chat/ChatRoom';
 import ChatRoomList from './Chat/ChatRoomList';
 
 import Game from './Game/Game';
-import GenerateCharacter from './Game/GenerateCharacter';
+import GenerateCharacter from './Auth/GenerateCharacter';
 
 export default function App() {
   const socket = io.connect('/')

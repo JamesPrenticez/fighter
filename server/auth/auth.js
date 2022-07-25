@@ -10,7 +10,15 @@ function getPublicAddress(data, cb){
 	db.getPublicAddress({publicAddress: data.publicAddress})
     .then((res) => {
       if(res != undefined)
-        cb({success: true, publicAddress: res.publicAddress, username: res.username, nonce: res.nonce})
+        cb(
+            { 
+              success: true,
+              publicAddress: res.publicAddress,
+              username: res.username,
+              nonce: res.nonce,
+              characters: JSON.parse(res.characters)
+            }
+          )
       else
         cb({success: false})
   })

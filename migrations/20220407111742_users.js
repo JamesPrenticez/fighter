@@ -4,9 +4,10 @@ exports.up = (knex, Promise) => {
     table.integer('nonce').notNullable()
     table.string('publicAddress').unique()
     table.string('username').unique()
+    table.string('characters').unique()
   })  
-};
+}
 
 exports.down = (knex, Promise) => {
   return knex.schema.dropTable('users')
-};
+}

@@ -6,6 +6,7 @@ import Layout from '../Layout'
 
 export default function Auth({socket}) {
   let authContainer = document.getElementById("auth-container");
+  let signOut = document.getElementById("signOut");
   // let usernameInput = document.getElementById("username");
   // let passwordInput = document.getElementById("password");
   let registerButton = document.getElementById("register");
@@ -21,31 +22,50 @@ export default function Auth({socket}) {
     await socket.on('loginResponse', (data) => {
       if(data.success){
         authContainer.style.display = "none"
+        signOut.style.display = "block"
         canvas.style.display = "inline-block"
-        alert(`You are now signed in as ${username}`)
+        return alert(`You are now signed in as ${username}`)
       } else {
-        alert("Sign in unsuccessful")
+        return alert("Sign in unsuccessasdfasdfadsfful")
       }
     })
   }
 
-  const register = () => {
-    loginButton.onclick = (event) => {
-  event.preventDefault();
-  socket.emit("login", {username: username.value, password: passwordInput.value})
-}
+  const register = async (e) => {
+    e.preventDefault();
+    socket.emit("login", {username: username.value, password: password.value})
+    //Listen for registration response
+    await socket.on('registrationResponse', (data) => {
+    if(data.success){
+      alert("Account created!")
+    } else {
+      alert("Username already taken")
+    }
+    })
   }
 
-  useEffect(() => {
-    socket.on('loginResponse', (data) => {
-      if(data.success){
-        authContainer.style.display = "none"
-        canvas.style.display = "inline-block"
-      } else {
-        alert("Sign in unsuccessful")
-      }
+  const disconnect = async () => {
+    socket.emit("signOut", {username: username.value})
+    //Listen for registration response
+    await socket.on('signOutResponse', (data) => {
+    if(data.success){
+      alert("Signed Out")
+      window.location.href = '/'
+    } else {
+      alert("hmm?")
+    }
     })
-  })
+  }
+  // useEffect(() => {
+  //   socket.on('loginResponse', (data) => {
+  //     if(data.success){
+  //       authContainer.style.display = "none"
+  //       canvas.style.display = "inline-block"
+  //     } else {
+  //       alert("Sign in unsuccessful")
+  //     }
+  //   })
+  // })
 
   return (
     <Layout>
@@ -84,14 +104,13 @@ export default function Auth({socket}) {
                 <div className="flex w-full pt-3">
                   <div
                     id="register"
-                    onClick={() => register()}
+                    onClick={(e) => register(e)}
                     className="flex items-center justify-center w-[50%] bg-orange-500 hover:bg-orange-600 hover:cursor-pointer text-white"
                   >
                     Register
                   </div>
                   
                   <button 
-                    type="submit"
                     id="login"
                     onClick={(e) => login(e)}
                     className="flex items-center justify-center w-[50%] bg-green-500 hover:bg-green-600 hover:cursor-pointer text-white"
@@ -114,7 +133,14 @@ export default function Auth({socket}) {
               height="500"
               className="border-2 border-gray-600 select-none box-border hidden"
             />
-            
+
+            <button
+              id="signOut"
+              className='p-2 border-2 border-purple-500 hover:bg-purple-500 text-purple-500 hover:text-white rounded-md text-lg hidden'
+              onClick={() => disconnect()}
+            >
+              Sign out
+            </button>            
           </div>
         </main>
 

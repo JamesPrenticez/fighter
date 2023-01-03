@@ -1,4 +1,4 @@
-export function draw(socket, ctx, framecount) {
+export function drawPlayer(socket, ctx, framecount) {
   
   //recieve from the server
   socket.on("newPositions", function(data){

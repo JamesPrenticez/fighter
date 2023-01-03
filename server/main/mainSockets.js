@@ -99,10 +99,16 @@ function listen(io){
             });		
         });
 
+        socket.on("signOut", () => {
+            Player.onDisconnect(socket);
+            delete SOCKET_LIST[socket.id]
+            socket.emit('signOutResponse',{success:true});		
+        })
+
         socket.on("disconnect", () => {
             Player.onDisconnect(socket);
             delete SOCKET_LIST[socket.id]
-        });
+        })
 
         // Chat
         socket.on("sendMessage", (data) => {

@@ -6,8 +6,6 @@ import Auth from './Auth/Auth'
 import ChatRoom from './Chat/ChatRoom';
 import ChatRoomList from './Chat/ChatRoomList';
 
-import Game from './Game/Draw';
-
 export default function App() {
   const socket = io()
   const [isConnected, setIsConnected] = useState(socket.connected)

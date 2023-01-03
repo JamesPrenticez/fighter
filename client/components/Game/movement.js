@@ -1,8 +1,5 @@
-import { useKeyPressed } from "../../hooks/useKeyPressed";
+import React, { useState, useEffect } from 'react'
 
-const downArrowPressed = useKeyPressed('ArrowDown')
-const upArrowPressed = useKeyPressed('ArrowUp')
-const enterPressed = useKeyPressed('Enter')
 
 
 export function movement(socket, ctx, framecount){

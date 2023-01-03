@@ -1,10 +1,9 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 
 // ====================================================================================== 
 //  Canvas 
 // ====================================================================================== 
-import {draw} from './draw'
-import {movement} from './movement'
+import {drawPlayer} from './drawPlayer'
 
 const Canvas = props => {
   
@@ -21,8 +20,7 @@ const Canvas = props => {
     const render = () => {
       frameCount++
       resizeCanvasToDisplaySize(canvas)
-      draw(socket, ctx, frameCount)
-      movement(socket, ctx, frameCount)
+      drawPlayer(socket, ctx, frameCount)
       animationFrameId = window.requestAnimationFrame(render)
     }
     render()
@@ -30,7 +28,7 @@ const Canvas = props => {
     return () => {
       window.cancelAnimationFrame(animationFrameId)
     }
-  }, [draw])
+  }, [drawPlayer])
   
   return <canvas id={id} ref={canvasRef} className="border-2 border-gray-600 select-none box-border hidden"/>
 }

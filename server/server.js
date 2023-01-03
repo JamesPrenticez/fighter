@@ -35,20 +35,22 @@ app.get('*', function(req, res) {
 })
 
 // ------ Sockets
-// const sockets = require("./game/sockets.js")
-// sockets.listen(io)
-// sockets.update()
-
-// Test
-// import {testActions} from "./game/testActions.js"
-// testActions()
-
-//Chat
-const chat = require("./chat/chatSockets.js")
-chat.listen(io)
+//Main
+const main = require("./main/mainSockets.js")
+main.listen(io)
+main.update(io)
 
 //Auth
-const auth = require("./auth/authSockets.js")
-auth.listen(io)
+// const auth = require("./auth/authSockets.js")
+// auth.listen(io)
+
+//Chat
+// const chat = require("./chat/chatSockets.js")
+// chat.listen(io)
+
+
+//Bullets
+// const bullet = require("./buullet/bulletSockets.js")
+// bullet.listen(io)
 
 module.exports = server

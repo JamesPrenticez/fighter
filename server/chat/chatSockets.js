@@ -38,6 +38,25 @@ function listen(io){
       })
     })
 
+  //   socket.on("sendMessage", (data) => {
+  //     let playerName = ("" + socket.id).slice(2,7)
+  //     for (let i in SOCKET_LIST){
+  //         SOCKET_LIST[i].emit("recieveMessage", playerName + ": " + data)
+  //     }
+  // });
+
+    socket.on("sendCommand", (command) => {
+        if (command === "help"){
+            result = "We would love to help you - /players"
+        }
+        else if (command === "players"){
+            result = "There are " + Object.keys(Player.list).length + " players online"
+        } else {
+            result = "Try /help for a list of commands"
+        }
+        socket.emit("recieveCommand", result)
+    });
+
     // user exits the room
     socket.on("disconnect", () => {
       // the user is deleted from array of users and a left room message displayed

@@ -1,29 +1,45 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { BrowserRouter, Routes , Route} from "react-router-dom";
 import io from "socket.io-client"
 
-import Home from './Home'
-
-import ConnectWallet from './Auth/ConnectWallet'
-
+import Auth from './Auth/Auth'
 import ChatRoom from './Chat/ChatRoom';
 import ChatRoomList from './Chat/ChatRoomList';
 
-import Game from './Game/Game';
-import GenerateCharacter from './Auth/GenerateCharacter';
+import Game from './Game/Draw';
 
 export default function App() {
-  const socket = io.connect('/')
+  const socket = io()
+  const [isConnected, setIsConnected] = useState(socket.connected)
+  
+  useEffect(() => {
+    socket.on('connect', () => {
+      setIsConnected(true)
+      console.log(socket.id)
+    })
+
+    socket.on('disconnect', () => {
+      setIsConnected(false)
+    })
+
+    socket.on('pong', () => {
+      setLastPong(new Date().toISOString())
+    });
+
+    return () => {
+      socket.off('connect')
+      socket.off('disconnect')
+      socket.off('pong')
+    }
+  }, [])
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          {/* <Route exact path="/" element={<Home/>} /> */}
-          <Route exact path="/" element={<ConnectWallet socket={socket}/>} />
+          <Route exact path="/" element={<Auth socket={socket}/>} />
           <Route exact path="/chat-room-list" element={<ChatRoomList socket={socket}/>} />
           <Route exact path="/chat/:roomname/:username" element={<ChatRoom socket={socket}/>} />
-          <Route exact path="/char" element={<GenerateCharacter />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -3,22 +3,26 @@ import React, { useRef, useEffect } from 'react'
 // ====================================================================================== 
 //  Canvas 
 // ====================================================================================== 
+import {draw} from './draw'
+import {movement} from './movement'
+
 const Canvas = props => {
   
-  const { draw } = props
+  const { socket, id } = props
+
   const canvasRef = useRef(null)
-  
   useEffect(() => {
     
     const canvas = canvasRef.current
-    const context = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d')
     let frameCount = 0
     let animationFrameId
     
     const render = () => {
       frameCount++
       resizeCanvasToDisplaySize(canvas)
-      draw(context, frameCount)
+      draw(socket, ctx, frameCount)
+      movement(socket, ctx, frameCount)
       animationFrameId = window.requestAnimationFrame(render)
     }
     render()
@@ -28,7 +32,7 @@ const Canvas = props => {
     }
   }, [draw])
   
-  return <canvas ref={canvasRef} className="border-2 border-green-400 rounded-md"/>
+  return <canvas id={id} ref={canvasRef} className="border-2 border-gray-600 select-none box-border hidden"/>
 }
 
 export default Canvas
@@ -38,8 +42,8 @@ export default Canvas
 // ====================================================================================== 
 function resizeCanvasToDisplaySize(canvas) {
     
-  const width = window.innerWidth - 100
-  const height = window.innerHeight - 100
+  const width = 500 //window.innerWidth - 100
+  const height = 500 //window.innerHeight - 100
 
   if (canvas.width !== width || canvas.height !== height) {
     const { devicePixelRatio:ratio=1 } = window

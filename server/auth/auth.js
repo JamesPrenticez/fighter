@@ -1,44 +1,33 @@
 const db = require("../database.js")
 
 module.exports = {
-  getPublicAddress,
+  isValidPassword,
   isUsernameTaken,
-  createNewAccount
+  addUser
 }
 
-function getPublicAddress(data, cb){
-	db.getPublicAddress({publicAddress: data.publicAddress})
+function isValidPassword(data, cb){
+	db.getUsernameAndPassword({username: data.username, password: data.password})
     .then((res) => {
-      if(res != undefined)
-        cb(
-            { 
-              success: true,
-              publicAddress: res.publicAddress,
-              username: res.username,
-              nonce: res.nonce,
-              characters: JSON.parse(res.characters)
-            }
-          )
+      if(res.length > 0)
+          cb(true);
       else
-        cb({success: false})
-  })
+          cb(false);
+    })
 }
 
 function isUsernameTaken(data, cb){
-	db.getUsername({username: data.username.toLowerCase()})
+	db.getUsername({username: data.username})
     .then((res) => {
       if(res.length > 0)
-        cb(true)
+          cb(true);
       else
-        cb(false)
-  })
+          cb(false);
+    })
 }
 
-function createNewAccount(data, cb){
-  db.createNewAccount({
-    publicAddress: data.publicAddress,
-    username: data.username
-  })
+function addUser(data, cb){
+  db.addUser({username: data.username, password: data.password})
   .then((res) => {
     cb()
   })

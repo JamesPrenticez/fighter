@@ -102,7 +102,7 @@ function listen(io){
         socket.on("signOut", () => {
             Player.onDisconnect(socket);
             delete SOCKET_LIST[socket.id]
-            socket.emit('signOutResponse',{success:true});		
+            socket.emit('signOutResponse',{success:true})
         })
 
         socket.on("disconnect", () => {

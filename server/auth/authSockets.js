@@ -1,4 +1,4 @@
-const { isUsernameTaken, createNewAccount, getPublicAddress } = require("./auth.js")
+const { isUsernameTaken, createNewAccount } = require("./auth.js")
 
 function listen(io){
   io.on("connect", (socket) => {

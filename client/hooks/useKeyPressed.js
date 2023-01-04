@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
-export const useKeyPressed = (targetKey) => {
-  const [keyPressed, setKeyPressed] = useState(false)
 
+// Target location is cavas but can otherwise just be "window"
+export const useKeyPressed = (targetKey, targetLocation) => {
+  if(!targetLocation) return
+  const [keyPressed, setKeyPressed] = useState(false)
   const handleKeyDown = (e) => {
-    console.log(e.key)
+    console.log(e.key == targetKey?(targetKey, targetLocation):false)
     if (e.repeat) return
     if (e.key === 'ArrowUp') e.preventDefault()
     if (e.key === targetKey) {
@@ -18,13 +20,14 @@ export const useKeyPressed = (targetKey) => {
     e.key === targetKey && setKeyPressed(false)
   }
 
+
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown)
-    window.addEventListener('keyup', handleKeyUp)
+    targetLocation.addEventListener('keydown', handleKeyDown)
+    targetLocation.addEventListener('keyup', handleKeyUp)
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-      window.removeEventListener('keyup', handleKeyUp)
+      targetLocation.removeEventListener('keydown', handleKeyDown)
+      targetLocation.removeEventListener('keyup', handleKeyUp)
     }
   })
   return keyPressed

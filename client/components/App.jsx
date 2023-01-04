@@ -8,28 +8,6 @@ import ChatRoomList from './Chat/ChatRoomList';
 
 export default function App() {
   const socket = io()
-  const [isConnected, setIsConnected] = useState(socket.connected)
-  
-  useEffect(() => {
-    socket.on('connect', () => {
-      setIsConnected(true)
-      console.log(socket.id)
-    })
-
-    socket.on('disconnect', () => {
-      setIsConnected(false)
-    })
-
-    socket.on('pong', () => {
-      setLastPong(new Date().toISOString())
-    });
-
-    return () => {
-      socket.off('connect')
-      socket.off('disconnect')
-      socket.off('pong')
-    }
-  }, [])
 
   return (
     <>

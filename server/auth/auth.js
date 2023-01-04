@@ -3,7 +3,7 @@ const db = require("../database.js")
 module.exports = {
   isValidPassword,
   isUsernameTaken,
-  addUser
+  createNewAccount
 }
 
 function isValidPassword(data, cb){
@@ -26,7 +26,7 @@ function isUsernameTaken(data, cb){
     })
 }
 
-function addUser(data, cb){
+function createNewAccount(data, cb){
   db.addUser({username: data.username, password: data.password})
   .then((res) => {
     cb()

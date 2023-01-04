@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
-import { useEffect } from 'react';
+import React, {useState, useEffect, useRef} from 'react'
 import Canvas from '../Game/Canvas';
 
 import Layout from '../Layout'
 
 export default function Auth({socket}) {
+  const container = useRef()
   let authContainer = document.getElementById("auth-container");
   let signOut = document.getElementById("signOut");
   // let usernameInput = document.getElementById("username");
@@ -66,6 +66,8 @@ export default function Auth({socket}) {
   //     }
   //   })
   // })
+
+  console.log(socket)
 
   return (
     <Layout>
@@ -133,6 +135,15 @@ export default function Auth({socket}) {
               height="500"
               className="border-2 border-gray-600 select-none box-border hidden"
             />
+
+            <p>
+            Player socket id:{socket.id}
+            </p>
+
+            <p>
+            There are {} players online
+            </p>
+
 
             <button
               id="signOut"

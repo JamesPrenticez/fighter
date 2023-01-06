@@ -43,7 +43,7 @@ Player.update = () => {
         pack.push({
             x: player.x,
             y: player.y,
-            username: player.username
+            username: player.username,
         })
     }
 

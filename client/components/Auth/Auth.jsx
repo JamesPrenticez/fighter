@@ -26,7 +26,7 @@ export default function Auth({socket}) {
         canvas.style.display = "inline-block"
         return alert(`You are now signed in as ${username}`)
       } else {
-        return alert("Sign in unsuccessasdfasdfadsfful")
+        return alert("Sign in unsuccessful =(")
       }
     })
   }

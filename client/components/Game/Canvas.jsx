@@ -22,7 +22,6 @@ const Canvas = props => {
         let interval = Date.now() - start
 
         if (interval < 1000) {
-          console.log(interval)
           frameCount++  
           resizeCanvasToDisplaySize(canvas)
           mainDraw(socket, ctx, frameCount)

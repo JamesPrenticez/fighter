@@ -11,11 +11,11 @@ const { isUsernameTaken, isValidPassword } = require("../auth/auth");
 // ---------- Player ---------- 
 Player.list = {}
 
-Player.onConnect = (socket) => {
+Player.onConnect = (socket, username) => {
     let numberOfPlayers =  Object.keys(Player.list).length + 1
-    let player = new Player(socket.id, numberOfPlayers)
+    let player = new Player(socket.id, username, numberOfPlayers)
     Player.list[socket.id] = player
-    console.log("There are " + Object.keys(Player.list).length + " players online")
+    console.log(`There are  ${Object.keys(Player.list).length} players online` .yellow)
 
     socket.on("keyPress", function(data){
         if(data.inputId === "up") player.pressingUp = data.state;
@@ -29,22 +29,24 @@ Player.onConnect = (socket) => {
 }
 
 Player.onDisconnect = (socket) => {
-    console.log("Socket disconnected " + socket.id)
-    delete Player.list[socket.id]
-    console.log("There are " + Object.keys(Player.list).length + " players online")
+  delete Player.list[socket.id]
+  console.log(`Socket disconnected: ${(socket.id)} ` .blue)
+  console.log(`There are  ${Object.keys(Player.list).length} players online` .yellow)
 }
 
 Player.update = () => {
     let pack = [];
+
     for(let i in Player.list){
         let player = Player.list[i]
         player.update()
         pack.push({
             x: player.x,
             y: player.y,
-            number: player.number
+            username: player.username
         })
     }
+
     return pack;
 }
 
@@ -73,13 +75,15 @@ Bullet.update = () => {
 function listen(io){
     io.sockets.on("connection", (socket) => {
         socket.id = Math.random();
+        SOCKET_LIST[socket.id] = socket
+
         console.log(`Socket connected: ${(socket.id)} ` .cyan)
-        SOCKET_LIST[socket.id] = socket;
+        console.log(`There are  ${Object.keys(Player.list).length} players online` .yellow)
         
         socket.on("login", (data) => {
               isValidPassword(data,function(res){
                 if(res){
-                    Player.onConnect(socket);
+                    Player.onConnect(socket, data.username);
                     socket.emit('loginResponse', {success:true});
                 } else {
                     socket.emit('loginResponse', {success:false});			
@@ -105,10 +109,10 @@ function listen(io){
             socket.emit('signOutResponse',{success:true})
         })
 
-        // socket.on("disconnect", () => {
-        //     Player.onDisconnect(socket);
-        //     delete SOCKET_LIST[socket.id]
-        // })
+        socket.on("disconnect", () => {
+            Player.onDisconnect(socket);
+            delete SOCKET_LIST[socket.id]
+        })
 
         // Chat
         socket.on("sendMessage", (data) => {
@@ -137,14 +141,13 @@ function update(){
     setInterval(function(){
         let pack = {
             player: Player.update(),   
-            bullet: Bullet.update()
+            // bullet: Bullet.update()
         }
-
         for(let i in SOCKET_LIST){
             let socket = SOCKET_LIST[i]
             socket.emit("newPositions", pack)
         }
-
+        
     }, 1000/25) //25 times per second FPS?
 }
 

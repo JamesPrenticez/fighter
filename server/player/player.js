@@ -11,8 +11,9 @@ let canvasY = 500
 
 // ---------- PLayer ---------- 
 module.exports = class Player{
-  constructor(id, number = 1){
+  constructor(id, username, number = 1,){
       this.id = id
+      this.username = username
       this.number = number,
       this.x = 250,
       this.y = 250,

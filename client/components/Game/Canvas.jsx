@@ -6,28 +6,35 @@ import {mainDraw} from './mainDraw'
 import { movement } from './movement'
 
 const Canvas = props => {
+    let start = Date.now()
     const { socket, id } = props
     const canvasRef = useRef(null)
-
+    
     useEffect(() => {
+      let timestamp
+      let frameCount = 0
+
       // Context
       const canvas = canvasRef.current
       const ctx = canvas.getContext('2d')
-      let frameCount = 0
-      let animationFrameId
 
-      const render = () => {
-        frameCount++
-        resizeCanvasToDisplaySize(canvas)
-        mainDraw(socket, ctx, frameCount)
-        movement(socket, canvas)
-        animationFrameId = window.requestAnimationFrame(render)
+      const render = (timestamp) => {
+        let interval = Date.now() - start
+
+        if (interval < 1000) {
+          console.log(interval)
+          frameCount++  
+          resizeCanvasToDisplaySize(canvas)
+          mainDraw(socket, ctx, frameCount)
+          movement(socket, canvas)
+        }
+        timestamp = window.requestAnimationFrame(render)
       }
 
-      render()
+      render(timestamp)
       
       return () => {
-        window.cancelAnimationFrame(animationFrameId)
+        window.cancelAnimationFrame(timestamp)
       }
     }, [mainDraw])
   

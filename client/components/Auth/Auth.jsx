@@ -67,8 +67,6 @@ export default function Auth({socket}) {
   //   })
   // })
 
-  console.log(socket)
-
   return (
     <Layout>
         <main className="flex justify-center">

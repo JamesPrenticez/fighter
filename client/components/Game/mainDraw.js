@@ -28,7 +28,7 @@ export function mainDraw(socket, ctx, framecount) {
       // Username
       ctx.font = "12px Arial";
       ctx.fillStyle = 'black'
-      ctx.fillText(data.player[i].username, data.player[i].x, data.player[i].y + 10)
+      ctx.fillText(data.player[i].username, data.player[i].x, data.player[i].y)
 
       // Animate Player Sprite
       if (playerFrameX < 9) playerFrameX ++
@@ -62,17 +62,15 @@ export function mainDraw(socket, ctx, framecount) {
 const images = {}
 images.player = new Image()
 images.player.src = './assets/BODY_skeleton.png'
-
 const playerWidth = 64
 const playerHeight = 64
 let playerFrameX = 0
-let playerFrameY = 3
 const playerSpeed = 6
 
 function drawPlayerSprite(ctx, img, playerData, sW, sH, dX, dY, dW, dH){
   let direction = determinePlayerAction(playerData)
 
-  let sX = playerWidth * direction.playerFrameX
+  let sX = playerWidth * playerFrameX
   let sY = playerHeight * direction.playerFrameY
 
   ctx.drawImage(

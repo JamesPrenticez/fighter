@@ -21,11 +21,11 @@ const Canvas = props => {
       const render = (timestamp) => {
         let interval = Date.now() - start
 
-        if (interval < 1000) {
+        if (interval < 1000 / 25) {
           frameCount++  
           resizeCanvasToDisplaySize(canvas)
-          mainDraw(socket, ctx, frameCount)
           movement(socket, canvas)
+          mainDraw(socket, ctx, frameCount)
         }
         timestamp = window.requestAnimationFrame(render)
       }

@@ -44,6 +44,11 @@ Player.update = () => {
             x: player.x,
             y: player.y,
             username: player.username,
+            pressingUp: player.pressingUp,
+            pressingDown: player.pressingDown,
+            pressingRight: player.pressingRight,
+            pressingLeft: player.pressingLeft,
+            pressingAttack: player.pressingAttack
         })
     }
 

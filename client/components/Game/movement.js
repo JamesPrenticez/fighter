@@ -1,13 +1,17 @@
+import e from "cors"
+
 export function movement(socket, canvas){
 
   const handleKeyDown = (e) => {
     if (e.repeat) return
     if (e.key === 'ArrowUp') e.preventDefault()
       e.preventDefault()
-      if (e.key === 'w') socket.emit("keyPress", {inputId:"up", state: true})
+
+      if (e.key === 'w')socket.emit("keyPress", {inputId:"up", state: true}) 
       else if (e.key === 'a') socket.emit("keyPress", {inputId:"left", state: true})
       else if (e.key === 's') socket.emit("keyPress", {inputId:"down", state: true})
       else if (e.key === 'd') socket.emit("keyPress", {inputId:"right", state: true})
+
   }
 
 
@@ -21,6 +25,8 @@ export function movement(socket, canvas){
 
   canvas.addEventListener('keydown', handleKeyDown)
   canvas.addEventListener('keyup', handleKeyUp)
+
+
 }
 
 // //send to the server
